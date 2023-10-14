@@ -1,0 +1,106 @@
+*{
+    box-sizing: border-box;
+}
+.container{
+    display: flex;
+    flex-direction: row;
+    border: 1px solid;
+    background-size: cover;
+    height: 100vh;
+}
+.nav{
+    flex-grow: 1;
+    background-color: #4665B5;
+    min-width: 150px;
+    height:100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.profile-image{
+    margin-top: 50px;
+    flex-grow: 1;
+}
+.message-icon{
+    flex-grow: 1;
+}
+.phone-icon{
+    flex-grow: 1;
+}
+.notification-icon{
+    flex-grow: 1;
+}
+.space{
+    flex-grow: 10;
+}
+.settings-icon{
+    flex-grow: 1;
+}
+.log-out-icon{
+    flex-grow: 1;
+}
+.messages{
+    flex-grow: 3;
+    background-color: #F2F2F2;
+    max-width: 500px;
+    height:100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.search-message{
+    width: 400px;
+    height: 50px;
+    flex-grow: 1;
+}
+.search-message input{
+    top: 30px;
+    left: 20px;
+    margin-top:30px;
+    width: 400px;
+    height: 50px;
+    border-radius:10px;
+    border: none;
+
+}
+.people{
+    flex-grow: 20;
+}
+.chatting{
+    flex-grow: 6;
+    background-color: #FFFFFF;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.sended-messages{
+    flex-grow: 20;
+}
+.type-message{
+    flex-grow: 1;
+    position: relative;
+}
+.type-message input{
+    margin-bottom: 20px;
+    width: 600px;
+    height: 50px;
+    background-color: #F2F2F2;
+    border: none;
+}
+.type-message button{
+    position: absolute;
+    background-color: #F2F2F2;
+    height: 50px;
+}
+fa-icon{
+    font-size: 30px;
+}
+button{
+    background-color:#4665B5;
+    border: none;
+    cursor: pointer;;
+}
+a{
+    color: black;
+}

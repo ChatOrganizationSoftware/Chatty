@@ -8,12 +8,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MainComponent } from './components/main/main.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignUpComponent,
-    LoginComponent
+    LoginComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
@@ -28,8 +30,11 @@ import { RouterModule } from '@angular/router';
       {
         path: 'sign-up',
         component:SignUpComponent
+      },
+      {
+        path: 'main',
+        component:MainComponent
       }
-
     ])
   ],
   providers: [],
