@@ -18,6 +18,8 @@ hr{
     width: 600px;
     position: relative;
     top: -100px;
+
+    border-color: rgb(244, 244, 244);
 }
 
 h1{
