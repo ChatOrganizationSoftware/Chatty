@@ -6,12 +6,12 @@
     height: 100vh;
 }
 
-img{
-    width: 300px;
-    height: 300px;
+fa-icon{
     position: relative;
     top: -100px;
 
+    color: rgb(91, 88, 236);
+    font-size: 300px;
 }
 
 hr{

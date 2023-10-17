@@ -37,6 +37,10 @@ import { LogoutComponent } from './components/logout/logout.component';
       {
         path: 'main',
         component:MainComponent
+      },
+      {
+        path: 'logout',
+        component:LogoutComponent
       }
     ])
   ],
