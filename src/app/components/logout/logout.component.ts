@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-logout',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./logout.component.css']
 })
 export class LogoutComponent {
+  check=faCircleCheck;
 
 }
