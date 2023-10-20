@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { faMessage ,faBell ,faUser,faPaperPlane} from '@fortawesome/free-regular-svg-icons';
 import { faPhone,faGear,faRightFromBracket ,faSearch} from '@fortawesome/free-solid-svg-icons';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 
 @Component({
@@ -8,7 +9,7 @@ import { faPhone,faGear,faRightFromBracket ,faSearch} from '@fortawesome/free-so
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent {
+export class MainComponent implements OnInit{
   search = faSearch;
   user = faUser;
   message = faMessage;
@@ -17,5 +18,15 @@ export class MainComponent {
   settings = faGear;
   log_out = faRightFromBracket;
   send = faPaperPlane;
+
+  constructor(private firebaseService: FirebaseService) { }
+  
+  ngOnInit(): void {
+    
+  }
+  
+  logout() {
+    this.firebaseService.logout();
+  }
   
 }

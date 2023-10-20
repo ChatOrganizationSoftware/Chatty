@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MainComponent } from './components/main/main.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { FirebaseService } from './services/firebase.service';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -25,9 +27,10 @@ import { LogoutComponent } from './components/logout/logout.component';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot([
       {
-        path: '',
+        path: 'login',
         component:LoginComponent
       },
       {
@@ -44,7 +47,7 @@ import { LogoutComponent } from './components/logout/logout.component';
       }
     ])
   ],
-  providers: [],
+  providers: [FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

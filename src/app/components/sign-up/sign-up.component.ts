@@ -1,19 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
-export function passwordMatchValidator(): ValidatorFn{
-  return (control: AbstractControl): ValidationErrors | null => {
-    const password = control.get('password')?.value;
-    const confirmPassword = control.get('consfirmPassword')?.value;
-    if (password && confirmPassword && password !== confirmPassword) {
-      return {
-        passwordsDontMatch: true
-      }
-    }
-    return null;
-  }
-}
+
 
 @Component({
   selector: 'sign-up',
@@ -24,29 +13,34 @@ export class SignUpComponent implements OnInit{
   
   eye = faEye;
 
-  signUpForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.email,Validators.required]),
-    password: new FormControl('', Validators.required),
-    confirmPassword:new FormControl('',Validators.required)
-  },{validators:passwordMatchValidator()})
-
-
-  constructor(){}
+  email: string = '';
+  password: string = '';
+ 
+ 
+  constructor(public firebaseService:FirebaseService) {
+  }
 
   ngOnInit(): void {
+   
+  }
+
+  register() {
     
+    if (this.email == '') {
+      alert("enter everything");
+      return;
+    }
+    if (this.password == '') {
+      alert("enter everything");
+      return;
+    }
+
+    this.firebaseService.register(this.email, this.password);
+    this.email = '';
+    this.password = '';
+      
   }
-  get name() {
-    return this.signUpForm.get('name');
-  }
-  get email() {
-    return this.signUpForm.get('email');
-  }
-  get password() {
-    return this.signUpForm.get('password');
-  }
-  get confirmPassword() {
-    return this.signUpForm.get('confirmPassword');
-  }
+  
+  
+  
 }
