@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { faMessage ,faBell ,faUser,faPaperPlane} from '@fortawesome/free-regular-svg-icons';
 import { faPhone,faGear,faRightFromBracket ,faSearch} from '@fortawesome/free-solid-svg-icons';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { DataService } from 'src/app/shared/data.service';
 
 
 @Component({
@@ -19,10 +20,14 @@ export class MainComponent implements OnInit{
   log_out = faRightFromBracket;
   send = faPaperPlane;
 
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService,private sharedService:DataService) { }
   
   ngOnInit(): void {
     
+  }
+
+  getData() {
+    return this.sharedService.getSharedData();
   }
   
   logout() {

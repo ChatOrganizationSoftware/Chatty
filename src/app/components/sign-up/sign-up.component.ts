@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { DataService } from 'src/app/shared/data.service';
 
 
 
@@ -13,16 +14,33 @@ export class SignUpComponent implements OnInit{
   
   eye = faEye;
 
+  
+
   email: string = '';
   password: string = '';
  
  
-  constructor(public firebaseService:FirebaseService) {
+  constructor(private firebaseService:FirebaseService,private sharedService:DataService) {
   }
 
   ngOnInit(): void {
    
   }
+
+  setData(data: any) {
+    this.sharedService.setSharedData(data);
+  }
+
+  
+  getFirstWord(input: string){
+    const words = input.split(' ');
+    if (words.length > 0) {
+      return words[0];
+    } else {
+      return '';
+    }
+  }
+
 
   register() {
     
