@@ -11,7 +11,9 @@ import { RouterModule } from '@angular/router';
 import { MainComponent } from './components/main/main.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { FirebaseService } from './services/firebase.service';
-import { environment } from 'src/environments/environment';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAuth,getAuth } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { environment } from 'src/environments/environment';
         path: 'logout',
         component:LogoutComponent
       }
-    ])
+    ]),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth())
   ],
   providers: [FirebaseService],
   bootstrap: [AppComponent]

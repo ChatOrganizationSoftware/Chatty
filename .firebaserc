@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "chat-4ff93"
+  },
+  "targets": {
+    "chat-4ff93": {
+      "hosting": {
+        "Chatty": [
+          "chat-4ff93"
+        ]
+      }
+    }
   }
 }
