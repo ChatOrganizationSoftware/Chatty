@@ -3,12 +3,12 @@ export const environment = {
     production: false,
     
     firebase: {
-        apiKey: "AIzaSyBG_abzwDyMac_74b7DgvCCT4pqCEH6rjQ",
-        authDomain: "deploy-chatty.firebaseapp.com",
-        projectId: "deploy-chatty",
-        storageBucket: "deploy-chatty.appspot.com",
-        messagingSenderId: "984628593557",
-        appId: "1:984628593557:web:e5b8f645e43193b155ec9c",
-        measurementId: "G-LDYM7HS47W"
+        apiKey: "AIzaSyCcjWJerH3151guzu580_TfPZwcUCYFSqY",
+  authDomain: "chat-4ff93.firebaseapp.com",
+  projectId: "chat-4ff93",
+  storageBucket: "chat-4ff93.appspot.com",
+  messagingSenderId: "198627310613",
+  appId: "1:198627310613:web:86bd14a591957bf55b621c",
+  measurementId: "G-4E41GP9CM1"
     }
 };
