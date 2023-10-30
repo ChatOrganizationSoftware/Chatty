@@ -13,8 +13,8 @@
             <input type="email" placeholder="Enter your email" [(ngModel)]="email" name="email">
         </div>
         <div class="create-password">
-            <input type="password" placeholder="Create password" [(ngModel)]="password" name="password">
-            <div class="icon">
+            <input [type]="showPassword ? 'text':'password'" placeholder="Create password" [(ngModel)]="password" name="password">
+            <div class="icon" (click)="toggleShow()">
                 <fa-icon [icon]="eye"></fa-icon>
             </div>
         </div>

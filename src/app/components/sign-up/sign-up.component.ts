@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
+import { Users } from 'src/app/model/users';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { DataService } from 'src/app/shared/data.service';
 
@@ -13,19 +14,29 @@ import { DataService } from 'src/app/shared/data.service';
 export class SignUpComponent implements OnInit{
   
   eye = faEye;
+  showPassword = false;
 
-  
+  users: Users[] = [];
+  id: string;
+  name: string;
 
   email: string = '';
   password: string = '';
  
  
-  constructor(private firebaseService:FirebaseService,private sharedService:DataService) {
+  constructor(
+    private firebaseService: FirebaseService,
+    private sharedService: DataService
+  ) {
   }
 
   ngOnInit(): void {
    
   }
+  saveName(name: string) {
+    // this.firebaseService.saveName(name);
+  }
+  
 
   setData(data: any) {
     this.sharedService.setSharedData(data);
@@ -58,6 +69,10 @@ export class SignUpComponent implements OnInit{
     this.password = '';
       
   }
+  toggleShow() {
+    this.showPassword = !this.showPassword;
+  }
+  
   
   
   

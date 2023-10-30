@@ -14,6 +14,9 @@ import { FirebaseService } from './services/firebase.service';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAuth,getAuth } from '@angular/fire/auth';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,9 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
     SignUpComponent,
     LoginComponent,
     MainComponent,
-    LogoutComponent
+    LogoutComponent,
+    ResetPasswordComponent,
+    VerifyEmailComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +34,7 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot([
       {
