@@ -12,13 +12,16 @@
                 </div>
             </div>
             <div class="password">
-                <input type="password" placeholder="Password" [(ngModel)]="password">
+                <input [type]="showPassword ? 'text':'password'" placeholder="Password" [(ngModel)]="password">
                 <div class="icon">
                     <fa-icon [icon]="lock"></fa-icon>
                 </div>
+                <div class="icon-eye" (click)="toggleShow()">
+                    <fa-icon [icon]="eye"></fa-icon>
+                </div>
             </div>
-            <div class="log-button">
-                <button (click)="login()" [routerLink]="['/main']">LOGIN</button>
+            <div>
+                <button (click)="login()" [routerLink]="['/main']" class="log-button">LOGIN</button>
             </div>
             <div class="sign-text">
                 <span>Don't have an account</span>

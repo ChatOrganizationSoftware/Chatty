@@ -1,14 +1,25 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { Users } from '../model/users';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
 
-  constructor(private fireauth: AngularFireAuth, private router: Router) { }
+  constructor(
+    private fireauth: AngularFireAuth,
+    private router: Router,
+    private firestore:AngularFirestore
+  ) { }
   
+
+  saveName(user:Users) {
+    user.id = this.firestore.createId();
+    return this.firestore.collection('/Users').add(user);
+  }
 
   // login method
 
@@ -41,6 +52,16 @@ export class FirebaseService {
       this.router.navigate(['/logout']);
     }, err => {
       alert('something went wrong.');
+    })
+  }
+
+  //forgot password
+
+  forgotPassword(email:string) {
+    this.fireauth.sendPasswordResetEmail(email).then(() => {
+      this.router.navigate(['/verify-email']);
+    }, err => {
+      alert('something went wrong');
     })
   }
 
