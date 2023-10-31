@@ -14,7 +14,7 @@
             <fa-icon [icon]="bell"></fa-icon>
         </button>
         <div class="space"></div>
-        <button class="settings-icon">
+        <button class="settings-icon" (click)="openSettings()">
             <fa-icon [icon]="settings"></fa-icon>
         </button>
         <button class="log-out-icon">
@@ -24,11 +24,29 @@
         </button>
     </div>
 
-    <div class="messages">
+    <div class="messages" [style.display]="showSettings ? 'none' : 'flex'">
         <div class="search-message">
             <input type="text" placeholder="search">
         </div>
         <div class="people"></div>
+    </div>
+
+    <div class="settings" [style.display]="showSettings ? 'flex' : 'none'">
+        <div class="settings-container">
+            <fa-icon [icon]="arrow" class="arrow-icon" (click)="openSettings()" style="cursor: pointer;"></fa-icon>
+            <h2>Settings</h2>
+            <div class="setting-options" (click)="changeTheme()">
+                Theme
+            </div>
+            
+            <div class="setting-options" (click)="changeBackground()">
+                Change background color
+            </div>
+            
+            <div class="setting-options" (click)="changePassword()">
+                Change password
+            </div>
+        </div>
     </div>
 
     <div class="chatting">
