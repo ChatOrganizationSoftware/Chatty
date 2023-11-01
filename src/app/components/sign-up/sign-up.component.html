@@ -7,7 +7,7 @@
             Create Account
         </div>
         <div class="name">
-            <input type="text" placeholder="Enter your full name" #fullname>
+            <input type="text" placeholder="Enter your full name" #fullname [(ngModel)]="name">
         </div>
         <div class="email">
             <input type="email" placeholder="Enter your email" [(ngModel)]="email" name="email">
@@ -18,7 +18,7 @@
                 <fa-icon [icon]="eye"></fa-icon>
             </div>
         </div>
-        <button class="continue" (click)="register()" (click)="setData(getFirstWord(fullname.value))" [routerLink]="['/main']">Continue</button>
+        <button class="continue" (click)="saveData()" (click)="register()" [routerLink]="['/main']">Continue</button>
     </div>
 </div>
 

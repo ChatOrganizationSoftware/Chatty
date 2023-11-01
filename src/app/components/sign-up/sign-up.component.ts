@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { Users } from 'src/app/model/users';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -18,7 +19,7 @@ export class SignUpComponent implements OnInit{
 
   users: Users[] = [];
   id: string;
-  name: string;
+  name: string='';
 
   email: string = '';
   password: string = '';
@@ -26,21 +27,24 @@ export class SignUpComponent implements OnInit{
  
   constructor(
     private firebaseService: FirebaseService,
-    private sharedService: DataService
+    private sharedService: DataService,
+    private firestore :AngularFirestore
   ) {
   }
 
   ngOnInit(): void {
    
   }
-  saveName(name: string) {
-    // this.firebaseService.saveName(name);
-  }
-  
 
-  setData(data: any) {
-    this.sharedService.setSharedData(data);
+  
+  addDataToFirestore(data:any) {
+    this.sharedService.addData(data);
   }
+  saveData() {
+    this.firestore.collection('users').add({ name: this.name });
+  }
+   
+  
 
   
   getFirstWord(input: string){

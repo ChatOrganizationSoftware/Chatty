@@ -17,6 +17,7 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { provideDatabase, getDatabase } from '@angular/fire/database';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
       }
     ]),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    provideDatabase(()=>getDatabase())
   ],
   providers: [FirebaseService],
   bootstrap: [AppComponent]
