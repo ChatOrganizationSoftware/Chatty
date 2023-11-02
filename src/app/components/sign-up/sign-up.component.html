@@ -7,18 +7,24 @@
             Create Account
         </div>
         <div class="name">
-            <input type="text" placeholder="Enter your full name" #fullname [(ngModel)]="name">
+            <input type="text" placeholder="Enter your full name" #fullname [(ngModel)]="name" required>
         </div>
         <div class="email">
-            <input type="email" placeholder="Enter your email" [(ngModel)]="email" name="email">
+            <input type="email" placeholder="Enter your email" [(ngModel)]="email" required>
         </div>
         <div class="create-password">
-            <input [type]="showPassword ? 'text':'password'" placeholder="Create password" [(ngModel)]="password" name="password">
-            <div class="icon" (click)="toggleShow()">
+            <input [type]="showPassword ? 'text':'password'" placeholder="Create password" [(ngModel)]="password" required>
+            <div class="icon" (click)="PasswordShow()">
                 <fa-icon [icon]="eye"></fa-icon>
             </div>
         </div>
-        <button class="continue" (click)="saveData()" (click)="register()" [routerLink]="['/main']">Continue</button>
+        <div class="confirm-password">
+            <input [type]="showConfirmPassword ? 'text':'password'" placeholder="Confirm password" [(ngModel)]="confirmPassword" required>
+            <div class="icon" (click)="ConfirmPasswordShow()">
+                <fa-icon [icon]="eye"></fa-icon>
+            </div>
+        </div>
+        <button class="continue" (click)="checkPasswordMatch()">Continue</button>
     </div>
 </div>
 

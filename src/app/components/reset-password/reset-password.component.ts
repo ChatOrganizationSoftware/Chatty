@@ -18,9 +18,5 @@ export class ResetPasswordComponent implements OnInit{
     
   }
 
-  forgotPassword() {
-    this.fire.forgotPassword(this.email);
-    this.email = '';
-  }
 
 }

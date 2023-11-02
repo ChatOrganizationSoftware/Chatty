@@ -7,9 +7,6 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/comp
 import { Observable } from 'rxjs';
 
 
-interface User{
-  name:string
-}
 
 @Component({
   selector: 'main',
@@ -27,8 +24,6 @@ export class MainComponent implements OnInit{
   send = faPaperPlane;
   name: string;
   
-  UserCol: AngularFirestoreCollection<User>;
-  users: Observable<User[]>;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -37,14 +32,8 @@ export class MainComponent implements OnInit{
   ) { }
   
   ngOnInit(): void {
-    this.UserCol = this.firestore.collection('users');
-    this.users = this.UserCol.valueChanges();
   }
-  getName() {
-    return this.firestore.collection('users.name').valueChanges();
-  }
-
-  
+ 
   
   logout() {
     this.firebaseService.logout();

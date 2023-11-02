@@ -19,6 +19,7 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +58,7 @@ import { provideDatabase, getDatabase } from '@angular/fire/database';
     ]),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideDatabase(()=>getDatabase())
+    provideDatabase(() => getDatabase())
   ],
   providers: [FirebaseService],
   bootstrap: [AppComponent]
