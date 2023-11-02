@@ -24,6 +24,7 @@ box-sizing: border-box;
     margin-left: 30px;
 }
 
+
 h1{
     font-size: 70px;
     font-family:sans-serif;
@@ -51,6 +52,7 @@ input{
     border: none;
     margin-left: 15px;
     padding-left:25px ;
+    font-size: 16px;
 }
 .icon{
     position: absolute;
@@ -64,7 +66,8 @@ input{
     left:280px; 
     top: 50%;
     transform: translateY(-100%);
-    align-items: center;  
+    align-items: center; 
+    cursor: pointer; 
 }
 .log-button{
     width:300px;

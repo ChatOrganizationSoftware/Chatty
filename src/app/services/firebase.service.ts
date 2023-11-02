@@ -16,10 +16,7 @@ export class FirebaseService {
   ) { }
   
 
-  saveName(user:Users) {
-    user.id = this.firestore.createId();
-    return this.firestore.collection('/Users').add(user);
-  }
+ 
 
   // login method
 
@@ -36,11 +33,11 @@ export class FirebaseService {
 
   register(email: string, password: string) {
     this.fireauth.createUserWithEmailAndPassword(email, password).then(() => {
-      alert('registration successfull');
       this.router.navigate(['/main']);
+      alert('registration successfull');
     }, err => {
-      alert('something went wrong.');
       this.router.navigate(['/register']);
+      alert('something went wrong.');
     })
   }
 
@@ -55,15 +52,8 @@ export class FirebaseService {
     })
   }
 
-  //forgot password
 
-  forgotPassword(email:string) {
-    this.fireauth.sendPasswordResetEmail(email).then(() => {
-      this.router.navigate(['/verify-email']);
-    }, err => {
-      alert('something went wrong');
-    })
-  }
+  
 
 
 

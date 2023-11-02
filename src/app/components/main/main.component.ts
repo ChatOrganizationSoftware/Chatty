@@ -3,6 +3,9 @@ import { faMessage ,faBell ,faUser,faPaperPlane} from '@fortawesome/free-regular
 import { faPhone,faGear,faRightFromBracket ,faSearch, faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { DataService } from 'src/app/shared/data.service';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
+
 
 
 @Component({
@@ -22,16 +25,19 @@ export class MainComponent implements OnInit{
   arrow = faArrowLeft;
 
   showSettings = false;
+  name: string;
+  
 
-  constructor(private firebaseService: FirebaseService,private sharedService:DataService) { }
+  constructor(
+    private firebaseService: FirebaseService,
+    private sharedService: DataService,
+    private firestore:AngularFirestore
+  ) { }
   
   ngOnInit(): void {
-    
   }
 
-  getData() {
-    return this.sharedService.getSharedData();
-  }
+
   
 
   openSettings(){

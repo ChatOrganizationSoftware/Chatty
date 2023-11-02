@@ -1,3 +1,42 @@
+<div class="body">
+    <div class="container">
+        <div class="nav">
+            <div class="profile-image">
+                <fa-icon [icon]="user" style="font-size: 50px;"></fa-icon>
+            </div>
+            <button class="message-icon">
+                <fa-icon [icon]="message"></fa-icon>
+            </button>
+            <button class="phone-icon">
+                <fa-icon [icon]="phone"></fa-icon>
+            </button>
+            <button class="notification-icon">
+                <fa-icon [icon]="bell"></fa-icon>
+            </button>
+            <div class="space"></div>
+            <button class="settings-icon">
+                <fa-icon [icon]="settings"></fa-icon>
+            </button>
+            <button class="log-out-icon" (click)="logout()">
+                    <fa-icon [icon]="log_out"></fa-icon>
+            </button>
+        </div>
+    
+        <div class="messages">
+            <div class="search-message">
+                <input type="text" placeholder="search">
+            </div>
+            <div class="people"></div>
+        </div>
+    
+        <div class="chatting">
+            <div class="sended-messages"></div>
+            <div class="type-message">
+                <input type="text" placeholder="   your message here...">
+                <button class="send-button">
+                    <fa-icon [icon]="send"></fa-icon>
+                </button>
+            </div>
 <div class="container">
     <div class="nav">
         <div class="profile-image">
