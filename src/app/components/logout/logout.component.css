@@ -1,0 +1,42 @@
+.body{
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+fa-icon{
+    position: relative;
+    top: -100px;
+
+    color: rgb(91, 88, 236);
+    font-size: 300px;
+}
+
+hr{
+    width: 600px;
+    position: relative;
+    top: -100px;
+
+    border-color: rgb(244, 244, 244);
+}
+
+h1{
+    position: absolute;
+    top: 550px;
+
+    font-weight: 100;
+    font-size: 50px;
+    font-family: sans-serif;
+}
+
+p{
+    position: absolute;
+    top: 630px;
+
+    font-weight: 100;
+    font-size: 35px;
+    font-family: sans-serif;
+    color: gray;
+}
