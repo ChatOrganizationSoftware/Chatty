@@ -19,12 +19,39 @@ export class MainComponent implements OnInit{
   settings = faGear;
   log_out = faRightFromBracket;
   send = faPaperPlane;
+  showIcon = true; // Başlangıçta simgenin gösterilmesi
+  showConfirmation = false; // Başlangıçta onay iletişim kutusu gizlenmiş
+  confirmationText = 'Çıkış yapmak istediğinize emin misiniz?';
 
   constructor(private firebaseService: FirebaseService,private sharedService:DataService) { }
   
   ngOnInit(): void {
     
   }
+
+  toggleIcon() {
+    if (this.showIcon) {
+      this.showConfirmation = true;
+    } else {
+      this.showIcon = true;
+      this.showConfirmation = false;
+    }
+  }
+
+  confirmLogout() {
+    // Kullanıcı "Evet" seçeneğini tıkladığında yapılacak işlemler burada olmalı
+    // Örneğin, çıkış işlemini gerçekleştirebilirsiniz
+    // Ardından onay iletişim kutusunu gizleyebilirsiniz
+    this.logout(); // Çıkış işlemini gerçekleştirin (örnek)
+    this.showConfirmation = false; // Onay iletişim kutusunu gizle
+  }
+  
+  cancelLogout() {
+    // Kullanıcı "Hayır" seçeneğini tıkladığında yapılacak işlemler burada olmalı
+    // İptal işlemini gerçekleştirerek onay iletişim kutusunu gizleyebilirsiniz
+    this.showConfirmation = false; // Onay iletişim kutusunu gizle
+  }
+
 
   getData() {
     return this.sharedService.getSharedData();

@@ -104,3 +104,43 @@ button{
 a{
     color: black;
 }
+
+.confirmation-dialog {
+    position: fixed;
+    color: white;
+    bottom: 25px;
+    left: 200px;
+    background-color: #4295a6;
+    padding: 10px;
+    border: 3px solid #000001; /* Evet düğmesi çerçeve rengi */
+    z-index: 1000; /* Diğer öğelerin üstünde görüntülenmesi için z-index kullanabilirsiniz */
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    row-gap: 15px; /* Düğmeler arasındaki boşluğu ayarlayabilirsiniz */
+  }
+  
+  .confirmation-dialog .confirm {
+    background-color: white; /* Evet düğmesi arka plan rengi */
+    color:  #4665B5; /* Evet düğmesi metin rengi */
+    border: 2px solid white; /* Evet düğmesi çerçeve rengi */
+    margin-left: 10px;
+  }
+  
+  .confirmation-dialog .deny {
+    background-color: white; /* Hayır düğmesi arka plan rengi */
+    color:  #4665B5; /* Hayır düğmesi metin rengi */
+    border: 2px solid white; /* Hayır düğmesi çerçeve rengi */
+    margin-left: 10px;
+  }
+  
+  .confirmation-dialog .confirm:hover {
+    background-color: darkred; /* Evet düğmesi üzerine gelindiğinde arka plan rengi */
+    color: white;
+  }
+  
+  .confirmation-dialog .deny:hover {
+    background-color: darkgrey; /* Hayır düğmesi üzerine gelindiğinde arka plan rengi */
+    color: white;
+  }
+  
