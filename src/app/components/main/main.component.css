@@ -122,16 +122,17 @@ button{
 .confirmation-dialog {
     position: fixed;
     color: white;
-    bottom: 25px;
-    left: 200px;
-    background-color: #4295a6;
+    bottom: 50px;
+    left: 250px;
+    background-color: #869FDD;
     padding: 10px;
-    border: 3px solid #000001; /* Evet düğmesi çerçeve rengi */
+    border: 1px solid rgb(188, 11, 11); /* Evet düğmesi çerçeve rengi */
     z-index: 1000; /* Diğer öğelerin üstünde görüntülenmesi için z-index kullanabilirsiniz */
     display: flex;
     align-items: center;
     justify-items: center;
     row-gap: 15px; /* Düğmeler arasındaki boşluğu ayarlayabilirsiniz */
+    border-radius:10px;
   }
 
   .confirmation-dialog .confirm {
@@ -154,7 +155,7 @@ button{
   }
   
   .confirmation-dialog .deny:hover {
-    background-color: darkgrey; /* Hayır düğmesi üzerine gelindiğinde arka plan rengi */
+    background-color: #BFCDF1; /* Hayır düğmesi üzerine gelindiğinde arka plan rengi */
     color: white;
 }
 
@@ -289,16 +290,17 @@ button{
 .dark-mode .confirmation-dialog {
     position: fixed;
     color: white;
-    bottom: 25px;
-    left: 200px;
-    background-color: #4295a6;
+    bottom: 50px;
+    left: 250px;
+    background-color: darkgray;
     padding: 10px;
-    border: 3px solid #000001; /* Evet düğmesi çerçeve rengi */
+    border: 1px solid rgb(188, 11, 11); /* Evet düğmesi çerçeve rengi */
     z-index: 1000; /* Diğer öğelerin üstünde görüntülenmesi için z-index kullanabilirsiniz */
     display: flex;
     align-items: center;
     justify-items: center;
     row-gap: 15px; /* Düğmeler arasındaki boşluğu ayarlayabilirsiniz */
+    border-radius:10px;
   }
 
   .dark-mode .confirmation-dialog .confirm {
@@ -321,7 +323,7 @@ button{
   }
   
   .dark-mode .confirmation-dialog .deny:hover {
-    background-color: darkgrey; /* Hayır düğmesi üzerine gelindiğinde arka plan rengi */
+    background-color: #BFCDF1; /* Hayır düğmesi üzerine gelindiğinde arka plan rengi */
     color: white;
 }
 
