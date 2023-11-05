@@ -18,6 +18,8 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { SettingsComponent } from './components/settings/settings.component';
+import { ChatsComponent } from './components/chats/chats.component';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { provideDatabase, getDatabase } from '@angular/fire/database';
     MainComponent,
     LogoutComponent,
     ResetPasswordComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    SettingsComponent,
+    ChatsComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +53,21 @@ import { provideDatabase, getDatabase } from '@angular/fire/database';
       },
       {
         path: 'main',
-        component:MainComponent
+        component:MainComponent,
+        children:[
+          { 
+            path: '', 
+            redirectTo: 'chats', 
+            pathMatch: 'full' },
+          {
+            path: 'chats',
+            component: ChatsComponent
+          },
+          {
+            path: 'settings',
+            component: SettingsComponent
+          },
+        ]
       },
       {
         path: 'logout',

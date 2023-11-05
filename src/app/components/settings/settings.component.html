@@ -1,0 +1,50 @@
+<div class="settings">
+    <div class="settings-container">
+        <fa-icon [icon]="arrow" class="arrow-icon" (click)="returnToMain()"></fa-icon>
+        <h2>Settings</h2>
+        <div [ngClass]="showThemeSettings ? 'active' : 'setting-options'" >
+            <div class="setting-title" (click)="changeTheme()">
+                Theme
+            </div>
+            <div class="content">
+                <div class="theme-default">
+                    Default
+                </div>
+                <div class="theme-dark-mode">
+                    Dark
+                </div>
+            </div>
+        </div>
+        
+        
+        <div [ngClass]="showBackgroundSettings ? 'active' : 'setting-options'" >
+            <div class="setting-title" (click)="changeBackground()">
+                Background color
+            </div>
+            <div class="content">
+                <div class="background-default">
+                    Default
+                </div>
+                <div class="background-blue">
+                    Blue
+                </div>
+                <div class="background-green">
+                    Green
+                </div>
+                <div class="background-red">
+                    Red
+                </div>
+            </div>
+        </div>
+        
+        <div [ngClass]="showPasswordSettings ? 'active' : 'setting-options'" >
+            <div class="setting-title" (click)="changePassword()">
+                Change password
+            </div>
+            <div class="content">
+               
+            </div>
+        </div>
+        
+    </div>
+</div>

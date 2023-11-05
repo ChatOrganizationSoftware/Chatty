@@ -21,31 +21,8 @@
                     <fa-icon [icon]="log_out"></fa-icon>
             </button>
         </div>
-    
-        <div class="messages" [style.display]="showSettings ? 'none' : 'flex'">
-            <div class="search-message">
-                <input type="text" placeholder="search">
-            </div>
-            <div class="people"></div>
-        </div>
-    
-        <div class="settings" [style.display]="showSettings ? 'flex' : 'none'">
-            <div class="settings-container">
-                <fa-icon [icon]="arrow" class="arrow-icon" (click)="openSettings()" style="cursor: pointer;"></fa-icon>
-                <h2>Settings</h2>
-                <div class="setting-options" (click)="changeTheme()">
-                    Theme
-                </div>
-                
-                <div class="setting-options" (click)="changeBackground()">
-                    Change background color
-                </div>
-                
-                <div class="setting-options" (click)="changePassword()">
-                    Change password
-                </div>
-            </div>
-        </div>
+
+        <router-outlet></router-outlet>        
     
         <div class="chatting">
             <div class="sended-messages"></div>
