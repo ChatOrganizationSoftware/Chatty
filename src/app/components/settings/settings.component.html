@@ -39,7 +39,13 @@
                 Change password
             </div>
             <div class="content">
-               
+                Current password <br>
+                <input type="password" placeholder="Current password" [(ngModel)]="currentPass">  <br>
+                New password <br>
+                <input type="password" placeholder="New password" [(ngModel)]="newPass"><br>
+                Confirm new password <br>
+                <input type="password" placeholder="Confirm new password" [(ngModel)]="confirmPass"> <br>
+                <button (click)="changePassword()">Change</button>
             </div>
         </div>
         

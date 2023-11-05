@@ -52,6 +52,10 @@ export class FirebaseService {
     })
   }
 
+  changePassword(currentPassword:string, newPassword:string){
+    const user = this.fireauth.currentUser;
+
+  }
 
   
 

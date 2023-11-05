@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { StylingService } from 'src/app/shared/styling.service';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-settings',
@@ -21,8 +22,11 @@ export class SettingsComponent {
 
   theme = 'default';
 
+  currentPass = "";
+  newPass = "";
+  confirmPass = "";
 
-  constructor(private router: Router, private styleService: StylingService){}
+  constructor(private router: Router, private styleService: StylingService, private firebaseService: FirebaseService){}
 
 
   returnToMain(){
@@ -51,6 +55,16 @@ export class SettingsComponent {
   }
 
   changePassword(){
-
+    if(this.currentPass!="" || this.newPass!="" || this.confirmPass!=""){
+      if(this.newPass == this.confirmPass){
+        this.firebaseService.changePassword(this.currentPass, this.newPass)
+      }
+      else{
+        alert('New password and Confirm password should be same. Please check them.')
+      }
+    }
+    else{
+      alert('Please make sure you filled all the fields.')
+    }
   }
 }

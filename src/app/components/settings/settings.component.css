@@ -63,9 +63,25 @@
     background-color: #f2f2f2;
     padding-left: 0px;
 
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .content div{
     cursor:pointer;
+}
+
+.content input{
+    position: relative;
+    left: 10px;
+    height: 20px;
+    width: 300px;
+}
+
+.content button{
+    position: relative;
+    left: 10px;
+    height: 20px;
+
+    border-radius: 30px;
+    background-color: rgb(164, 168, 168);
 }
