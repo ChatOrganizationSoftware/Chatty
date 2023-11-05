@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { faMessage ,faBell ,faUser,faPaperPlane} from '@fortawesome/free-regular-svg-icons';
+import { faMessage ,faBell ,faUser,faPaperPlane, faMoon} from '@fortawesome/free-regular-svg-icons';
 import { faPhone,faGear,faRightFromBracket ,faSearch} from '@fortawesome/free-solid-svg-icons';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { DataService } from 'src/app/shared/data.service';
@@ -19,9 +19,9 @@ export class MainComponent implements OnInit{
   settings = faGear;
   log_out = faRightFromBracket;
   send = faPaperPlane;
-  showIcon = true; // Başlangıçta simgenin gösterilmesi
   showConfirmation = false; // Başlangıçta onay iletişim kutusu gizlenmiş
   confirmationText = 'Çıkış yapmak istediğinize emin misiniz?';
+  darkMode = faMoon;
 
   constructor(private firebaseService: FirebaseService,private sharedService:DataService) { }
   
@@ -30,12 +30,7 @@ export class MainComponent implements OnInit{
   }
 
   toggleIcon() {
-    if (this.showIcon) {
-      this.showConfirmation = true;
-    } else {
-      this.showIcon = true;
-      this.showConfirmation = false;
-    }
+    this.showConfirmation = !this.showConfirmation; // Her tıklamada bilgi durumunu tersine çevir
   }
 
   confirmLogout() {
@@ -59,6 +54,12 @@ export class MainComponent implements OnInit{
   
   logout() {
     this.firebaseService.logout();
+  }
+
+  isDarkModeEnabled = false;
+
+  toggleDarkMode() {
+    this.isDarkModeEnabled = !this.isDarkModeEnabled;
   }
   
 }
