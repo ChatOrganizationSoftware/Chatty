@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { faMessage ,faBell ,faUser,faPaperPlane} from '@fortawesome/free-regular-svg-icons';
+import { faMessage ,faBell ,faUser,faPaperPlane, faMoon} from '@fortawesome/free-regular-svg-icons';
 import { faPhone,faGear,faRightFromBracket ,faSearch} from '@fortawesome/free-solid-svg-icons';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-
 
 @Component({
   selector: 'main',
@@ -22,7 +21,9 @@ export class MainComponent implements OnInit{
   log_out = faRightFromBracket;
   send = faPaperPlane;
   name: any;
-  
+  showConfirmation = false; // Başlangıçta onay iletişim kutusu gizlenmiş
+  confirmationText = 'Çıkış yapmak istediğinize emin misiniz?';
+  darkMode = faMoon;
   
 
   constructor(
@@ -50,12 +51,32 @@ export class MainComponent implements OnInit{
     }
   }
   
+  toggleIcon() {
+    this.showConfirmation = !this.showConfirmation; // Her tıklamada bilgi durumunu tersine çevir
+  }
+
+  confirmLogout() {
+    // Kullanıcı "Evet" seçeneğini tıkladığında yapılacak işlemler burada olmalı
+    // Örneğin, çıkış işlemini gerçekleştirebilirsiniz
+    // Ardından onay iletişim kutusunu gizleyebilirsiniz
+    this.logout(); // Çıkış işlemini gerçekleştirin (örnek)
+    this.showConfirmation = false; // Onay iletişim kutusunu gizle
+  }
   
-  
- 
+  cancelLogout() {
+    // Kullanıcı "Hayır" seçeneğini tıkladığında yapılacak işlemler burada olmalı
+    // İptal işlemini gerçekleştirerek onay iletişim kutusunu gizleyebilirsiniz
+    this.showConfirmation = false; // Onay iletişim kutusunu gizle
+  }
   
   logout() {
     this.firebaseService.logout();
+  }
+
+  isDarkModeEnabled = false;
+
+  toggleDarkMode() {
+    this.isDarkModeEnabled = !this.isDarkModeEnabled;
   }
   
 }
