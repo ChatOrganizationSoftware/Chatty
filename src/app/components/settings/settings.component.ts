@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { StylingService } from 'src/app/shared/styling.service';
 
 @Component({
   selector: 'app-settings',
@@ -14,23 +15,42 @@ export class SettingsComponent {
   showBackgroundSettings = false;
   showPasswordSettings = false;
 
+  background = {
+                'background-color': '#869FDD'
+                }
 
-  constructor(private router: Router){}
+  theme = 'default';
+
+
+  constructor(private router: Router, private styleService: StylingService){}
 
 
   returnToMain(){
     this.router.navigate(['main'])
   }
 
-  changeTheme(){
+  showThemeSet(){
     this.showThemeSettings = !this.showThemeSettings;
   }
 
-  changeBackground(){
+  changeTheme(theme:string){
+    this.theme = theme;
+  }
+
+  showBackgroundSet(){
     this.showBackgroundSettings = !this.showBackgroundSettings;
   }
 
-  changePassword(){
+  changeBackground(color:string){
+    this.background['background-color'] = color;
+    this.styleService.updateBackgroundColor(this.background)
+  }
+
+  showPasswordSet(){
     this.showPasswordSettings = !this.showPasswordSettings;
+  }
+
+  changePassword(){
+
   }
 }

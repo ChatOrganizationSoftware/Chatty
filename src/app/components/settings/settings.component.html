@@ -3,14 +3,14 @@
         <fa-icon [icon]="arrow" class="arrow-icon" (click)="returnToMain()"></fa-icon>
         <h2>Settings</h2>
         <div [ngClass]="showThemeSettings ? 'active' : 'setting-options'" >
-            <div class="setting-title" (click)="changeTheme()">
+            <div class="setting-title" (click)="showThemeSet()">
                 Theme
             </div>
             <div class="content">
-                <div class="theme-default">
+                <div class="theme-default" (click)="changeTheme('default')">
                     Default
                 </div>
-                <div class="theme-dark-mode">
+                <div class="theme-dark-mode" (click)="changeTheme('dark')">
                     Dark
                 </div>
             </div>
@@ -18,27 +18,24 @@
         
         
         <div [ngClass]="showBackgroundSettings ? 'active' : 'setting-options'" >
-            <div class="setting-title" (click)="changeBackground()">
+            <div class="setting-title" (click)="showBackgroundSet()">
                 Background color
             </div>
             <div class="content">
-                <div class="background-default">
+                <div class="background-default" (click)="changeBackground('#869FDD')">
                     Default
                 </div>
-                <div class="background-blue">
-                    Blue
-                </div>
-                <div class="background-green">
+                <div class="background-green" (click)="changeBackground('#11f211')">
                     Green
                 </div>
-                <div class="background-red">
+                <div class="background-red" (click)="changeBackground('#fb0303')">
                     Red
                 </div>
             </div>
         </div>
         
         <div [ngClass]="showPasswordSettings ? 'active' : 'setting-options'" >
-            <div class="setting-title" (click)="changePassword()">
+            <div class="setting-title" (click)="showPasswordSet()">
                 Change password
             </div>
             <div class="content">

@@ -7,6 +7,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/comp
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
+import { StylingService } from 'src/app/shared/styling.service';
+
 
 
 @Component({
@@ -32,7 +34,8 @@ export class MainComponent implements OnInit{
     private sharedService: DataService,
     private firestore:AngularFirestore,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public styleService: StylingService
   ) { }
   
   ngOnInit(): void {

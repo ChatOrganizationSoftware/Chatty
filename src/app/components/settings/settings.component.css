@@ -27,14 +27,13 @@
     left: 60px;
 }
 .active, .setting-options{
-    width: 490px;
+    width: 400px;
     max-height: 400px;
     border-bottom: 1px solid rgb(128, 128, 128);
 
     font-family: sans-serif;
     font-size: 30px;
     color: rgb(67, 66, 66);
-    
 }
 
 .setting-title{
@@ -43,7 +42,11 @@
 }
 
 .active, .setting-title:hover{
-    background-color: #bbb8b8;
+    background-color: #b9bbb8;
+}
+
+.content div:hover{
+    background-color: #828482;
 }
 
 .setting-options .content{
@@ -57,12 +60,12 @@
 }
 
 .content{
-    transition: max-height 0.2s ease-out;
-    overflow: auto;
-
-    background-color: #F2F2F2;
-    padding-left: 10px;
+    background-color: #f2f2f2;
+    padding-left: 0px;
 
     font-size: 25px;
+}
 
+.content div{
+    cursor:pointer;
 }

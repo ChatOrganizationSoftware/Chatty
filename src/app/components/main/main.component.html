@@ -24,7 +24,7 @@
 
         <router-outlet></router-outlet>        
     
-        <div class="chatting">
+        <div class="chatting" [ngStyle]="styleService.background" >
             <div class="sended-messages"></div>
             <div class="type-message">
                 <input type="text" placeholder="   your message here...">
