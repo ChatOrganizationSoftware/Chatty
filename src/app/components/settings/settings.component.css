@@ -68,6 +68,7 @@
 
 .content div{
     cursor:pointer;
+    padding-left: 10px;
 }
 
 .content input{
