@@ -23,7 +23,7 @@ export class MainComponent implements OnInit{
   send = faPaperPlane;
   name: any;
   
-  
+  userId: string;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -37,6 +37,7 @@ export class MainComponent implements OnInit{
         this.firestore.collection('users').doc(name.uid).valueChanges().subscribe((userData: any) => {
           this.name = userData;
         });
+        this.userId = name.uid;
       }
     });
   }
