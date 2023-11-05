@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { Users } from 'src/app/model/users';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -15,62 +18,94 @@ export class SignUpComponent implements OnInit{
   
   eye = faEye;
   showPassword = false;
+  showConfirmPassword = false;
 
-  users: Users[] = [];
-  id: string;
-  name: string;
+  name: string='';
 
   email: string = '';
   password: string = '';
+  confirmPassword: string = '';
+  isPasswordMatch = true;
  
  
   constructor(
     private firebaseService: FirebaseService,
-    private sharedService: DataService
+    private sharedService: DataService,
+    private firestore: AngularFirestore,
+    private router: Router,
+    private auth: AngularFireAuth
   ) {
   }
 
   ngOnInit(): void {
    
   }
-  saveName(name: string) {
-    // this.firebaseService.saveName(name);
+
+  
+ 
+  // saveData() {
+  //   this.firestore.collection('users').add({
+  //     name: this.name,
+  //     email: this.email,
+  //     password:this.password
+  //   });
+  // }
+
+  storeUserData(uid: string, name: string) {
+    this.firestore.collection('users').doc(uid).set({
+      name: name
+    });
+  }
+   
+  signUp(email: string, password: string,name: string) {
+    this.auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        if (userCredential.user) {
+          const uid = userCredential.user.uid;
+          this.storeUserData(uid, name);
+          localStorage.setItem('token', 'true');
+          this.router.navigate(['/main']);
+        } else {
+          // Handle the case where userCredential.user is null
+          console.error('User registration failed');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
   
 
-  setData(data: any) {
-    this.sharedService.setSharedData(data);
-  }
-
   
-  getFirstWord(input: string){
-    const words = input.split(' ');
-    if (words.length > 0) {
-      return words[0];
-    } else {
-      return '';
-    }
-  }
+  
 
 
-  register() {
+  // register() {
     
-    if (this.email == '') {
-      alert("enter everything");
-      return;
-    }
-    if (this.password == '') {
-      alert("enter everything");
-      return;
-    }
+  //   this.firebaseService.register(this.email, this.password);
+  //   this.name = '';
+  //   this.email = '';
+  //   this.password = '';
+  //   this.confirmPassword = '';
+  // }
 
-    this.firebaseService.register(this.email, this.password);
-    this.email = '';
-    this.password = '';
-      
-  }
-  toggleShow() {
+  PasswordShow() {
     this.showPassword = !this.showPassword;
+  }
+  ConfirmPasswordShow() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  checkPasswordMatch() {
+    if (this.password !== this.confirmPassword) {
+         this.isPasswordMatch = false;
+         alert('Passwords do not match. Please try again.');
+        return;
+    }
+    else {
+        this.isPasswordMatch = true;
+        this.signUp(this.email,this.password,this.name);
+    }
   }
   
   

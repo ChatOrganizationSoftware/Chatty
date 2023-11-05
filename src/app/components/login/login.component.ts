@@ -28,18 +28,13 @@ export class LoginComponent implements OnInit{
 
   login() {
     
-    if (this.email == '') {
-      alert("enter everything");
-      return;
+    
+    if (this.email && this.password) {
+      this.firebaseService.login(this.email, this.password);
+      this.email = '';
+      this.password = '';
     }
-    if (this.password == '') {
-      alert("enter everything");
-      return;
-    }
-
-    this.firebaseService.login(this.email, this.password);
-    this.email = '';
-    this.password = '';
+    
       
   }
   toggleShow() {

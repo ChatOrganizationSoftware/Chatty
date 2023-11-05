@@ -1,14 +1,27 @@
-.body{
-    background-color: #3C61BE;
+body{
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
+.body{
+    position: relative;
+    transform: translate(0, 10%);
+    width: 60%;
+    height: 80vh;
+    background-color: #3C61BE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    border-radius: 20px;
+}
+
 
 .container{
-    width: 500px;
-    height: 500px;
+    width: 60%;
+    height: 70vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -80,12 +93,13 @@ input{
     height: 36px;
     border-radius:10px;
     border: 2px #DBDBDB solid;
+    font-size: 16px;
     
 }
 .icon{
     position: absolute;
-    top: 0;
-    right: 5px;
+    top: 3px;
+    right: 7px;
     height: 100%;
     display: flex;
     align-items: center;

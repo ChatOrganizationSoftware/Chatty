@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { Users } from '../model/users';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +15,8 @@ export class FirebaseService {
     private firestore:AngularFirestore
   ) { }
   
-
-  saveName(user:Users) {
-    user.id = this.firestore.createId();
-    return this.firestore.collection('/Users').add(user);
-  }
+  
+ 
 
   // login method
 
@@ -34,15 +31,15 @@ export class FirebaseService {
   }
   // register method
 
-  register(email: string, password: string) {
-    this.fireauth.createUserWithEmailAndPassword(email, password).then(() => {
-      alert('registration successfull');
-      this.router.navigate(['/main']);
-    }, err => {
-      alert('something went wrong.');
-      this.router.navigate(['/register']);
-    })
-  }
+  // register(email: string, password: string) {
+  //   this.fireauth.createUserWithEmailAndPassword(email, password).then(() => {
+  //     this.router.navigate(['/main']);
+  //     alert('registration successfull');
+  //   }, err => {
+  //     this.router.navigate(['/register']);
+  //     alert('something went wrong.');
+  //   })
+  // }
 
   //log out method
 
@@ -55,15 +52,12 @@ export class FirebaseService {
     })
   }
 
-  //forgot password
+  // getCurrentUser() {
+  //   return this.fireauth.authState;
+  // }
 
-  forgotPassword(email:string) {
-    this.fireauth.sendPasswordResetEmail(email).then(() => {
-      this.router.navigate(['/verify-email']);
-    }, err => {
-      alert('something went wrong');
-    })
-  }
+
+  
 
 
 

@@ -1,20 +1,16 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
+  constructor(private firestore:AngularFirestore) {}
 
-  sharedData: any;
-
-  constructor() { }
-
-  setSharedData(data: any) {
-    this.sharedData = data;
+  getPasswordByUsername(username: string) {
+    return this.firestore.collection('users', ref => ref.where('username', '==', username)).valueChanges();
   }
-
-  getSharedData() {
-    return this.sharedData;
-  }
+  
+  
 }

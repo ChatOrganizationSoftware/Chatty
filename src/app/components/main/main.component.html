@@ -1,55 +1,55 @@
 <div id="dark-mode-container" [ngClass]="{'dark-mode': isDarkModeEnabled}">
-    <div class="container">
-        <div class="nav">
-            <div class="profile-image">
-                <fa-icon [icon]="user" style="font-size: 50px;"></fa-icon>
-                <p style="font-size: 20px;">{{getData()}}</p>
-            </div>
-            <button class="message-icon">
-                <fa-icon [icon]="message"></fa-icon>
-            </button>
-            <button class="phone-icon">
-                <fa-icon [icon]="phone"></fa-icon>
-            </button>
-            <button class="notification-icon">
-                <fa-icon [icon]="bell"></fa-icon>
-            </button>
-            
-            <div class="space"></div>
-
-            <button class="dark-mode-icon" (click)="toggleDarkMode()">
-                <fa-icon [icon]="darkMode"></fa-icon>
-            </button>
-
-            <button class="settings-icon">
-                <fa-icon [icon]="settings"></fa-icon>
-            </button> 
-            <button class="log-out-icon" (click)="toggleIcon()">
-                <fa-icon  [icon]="log_out"></fa-icon>
-            </button>
-        </div>
-    
-        <div *ngIf="showConfirmation" class="confirmation-dialog">
-            <p>{{ confirmationText }}</p>
-            <button (click)="confirmLogout()" class="confirm">Evet</button>
-            <button (click)="cancelLogout()" class="deny">Hayır</button>
-        </div>
-
-        <div class="messages">
-            <div class="search-message">
-                <input type="text" placeholder="search">
-            </div>
-            <div class="people"></div>
-        </div>
-
-        <div class="chatting">
-            <div class="sended-messages"></div>
-            <div class="type-message">
-                <input type="text" placeholder="   your message here...">
-                <button class="send-button">
-                    <fa-icon [icon]="send"></fa-icon>
+    <div class="body">
+        <div class="container">
+            <div class="nav">
+                <div class="profile-image">
+                    <fa-icon [icon]="user" style="font-size: 50px;"></fa-icon>
+                    <h3>{{getFirstWord(name.name)}}</h3>
+                </div>
+                <button class="message-icon">
+                    <fa-icon [icon]="message"></fa-icon>
                 </button>
-            </div>    
+                <button class="phone-icon">
+                    <fa-icon [icon]="phone"></fa-icon>
+                </button>
+                <button class="notification-icon">
+                    <fa-icon [icon]="bell"></fa-icon>
+                </button>
+                <div class="space"></div>
+                <button class="dark-mode-icon" (click)="toggleDarkMode()">
+                    <fa-icon [icon]="darkMode"></fa-icon>
+                </button>
+    
+                <button class="settings-icon">
+                    <fa-icon [icon]="settings"></fa-icon>
+                </button> 
+                <button class="log-out-icon" (click)="toggleIcon()">
+                    <fa-icon  [icon]="log_out"></fa-icon>
+                </button>
+            </div>
+        
+            <div *ngIf="showConfirmation" class="confirmation-dialog">
+                <p>{{ confirmationText }}</p>
+                <button (click)="confirmLogout()" class="confirm">Evet</button>
+                <button (click)="cancelLogout()" class="deny">Hayır</button>
+            </div>
+            
+            <div class="messages">
+                <div class="search-message">
+                    <input type="text" placeholder="search">
+                </div>
+                <div class="people"></div>
+            </div>
+    
+            <div class="chatting">
+                <div class="sended-messages"></div>
+                <div class="type-message">
+                    <input type="text" placeholder="   your message here...">
+                    <button class="send-button">
+                        <fa-icon [icon]="send"></fa-icon>
+                    </button>
+                </div> 
+            </div>
         </div>
     </div>
 </div>
