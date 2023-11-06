@@ -80,7 +80,7 @@ export class MainComponent implements OnInit{
     this.showConfirmation = false; // Onay iletişim kutusunu gizle
   }
   
-  }
+  
   
   openSettings(){
     this.router.navigate(['settings'], {relativeTo: this.route})
