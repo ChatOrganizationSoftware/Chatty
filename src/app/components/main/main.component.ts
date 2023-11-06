@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { faMessage ,faBell ,faUser,faPaperPlane} from '@fortawesome/free-regular-svg-icons';
+import { faMessage ,faBell ,faUser,faPaperPlane, faMoon} from '@fortawesome/free-regular-svg-icons';
 import { faPhone,faGear,faRightFromBracket ,faSearch} from '@fortawesome/free-solid-svg-icons';
 import { FirebaseService } from 'src/app/services/firebase.service';
-import { DataService } from 'src/app/shared/data.service';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -25,20 +25,61 @@ export class MainComponent implements OnInit{
   settings = faGear;
   log_out = faRightFromBracket;
   send = faPaperPlane;
-
-  name: string;
+  name: any;
+  
+  userId: string;
+  showConfirmation = false; // Başlangıçta onay iletişim kutusu gizlenmiş
+  confirmationText = 'Çıkış yapmak istediğinize emin misiniz?';
+  darkMode = faMoon;
   
 
   constructor(
     private firebaseService: FirebaseService,
-    private sharedService: DataService,
-    private firestore:AngularFirestore,
+    private afAuth: AngularFireAuth,
+    private firestore: AngularFirestore,
     private router: Router,
     private route: ActivatedRoute,
     public styleService: StylingService
-  ) { }
+  ) {}
   
   ngOnInit(): void {
+    this.afAuth.authState.subscribe((name) => {
+      if (name) {
+        this.firestore.collection('users').doc(name.uid).valueChanges().subscribe((userData: any) => {
+          this.name = userData;
+        });
+        this.userId = name.uid;
+      }
+    });
+  }
+
+  getFirstWord(input: string){
+    const words = input.split(' ');
+    if (words.length > 0) {
+      return words[0];
+    } else {
+      return '';
+    }
+  }
+  
+  toggleIcon() {
+    this.showConfirmation = !this.showConfirmation; // Her tıklamada bilgi durumunu tersine çevir
+  }
+
+  confirmLogout() {
+    // Kullanıcı "Evet" seçeneğini tıkladığında yapılacak işlemler burada olmalı
+    // Örneğin, çıkış işlemini gerçekleştirebilirsiniz
+    // Ardından onay iletişim kutusunu gizleyebilirsiniz
+    this.logout(); // Çıkış işlemini gerçekleştirin (örnek)
+    this.showConfirmation = false; // Onay iletişim kutusunu gizle
+  }
+  
+  cancelLogout() {
+    // Kullanıcı "Hayır" seçeneğini tıkladığında yapılacak işlemler burada olmalı
+    // İptal işlemini gerçekleştirerek onay iletişim kutusunu gizleyebilirsiniz
+    this.showConfirmation = false; // Onay iletişim kutusunu gizle
+  }
+  
   }
   
   openSettings(){
@@ -47,6 +88,12 @@ export class MainComponent implements OnInit{
 
   logout() {
     this.firebaseService.logout();
+  }
+
+  isDarkModeEnabled = false;
+
+  toggleDarkMode() {
+    this.isDarkModeEnabled = !this.isDarkModeEnabled;
   }
   
 }

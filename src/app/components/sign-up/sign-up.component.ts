@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
@@ -31,7 +32,8 @@ export class SignUpComponent implements OnInit{
     private firebaseService: FirebaseService,
     private sharedService: DataService,
     private firestore: AngularFirestore,
-    private router:Router
+    private router: Router,
+    private auth: AngularFireAuth
   ) {
   }
 
@@ -41,31 +43,52 @@ export class SignUpComponent implements OnInit{
 
   
  
-  saveData() {
-    this.firestore.collection('users').add({ name: this.name });
+  // saveData() {
+  //   this.firestore.collection('users').add({
+  //     name: this.name,
+  //     email: this.email,
+  //     password:this.password
+  //   });
+  // }
+
+  storeUserData(uid: string, name: string) {
+    this.firestore.collection('users').doc(uid).set({
+      name: name
+    });
   }
    
-  
-
-  
-  getFirstWord(input: string){
-    const words = input.split(' ');
-    if (words.length > 0) {
-      return words[0];
-    } else {
-      return '';
-    }
+  signUp(email: string, password: string,name: string) {
+    this.auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        if (userCredential.user) {
+          const uid = userCredential.user.uid;
+          this.storeUserData(uid, name);
+          localStorage.setItem('token', 'true');
+          this.router.navigate(['/main']);
+        } else {
+          // Handle the case where userCredential.user is null
+          console.error('User registration failed');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
+  
+
+  
+  
 
 
-  register() {
+  // register() {
     
-    this.firebaseService.register(this.email, this.password);
-    this.name = '';
-    this.email = '';
-    this.password = '';
-    this.confirmPassword = '';
-  }
+  //   this.firebaseService.register(this.email, this.password);
+  //   this.name = '';
+  //   this.email = '';
+  //   this.password = '';
+  //   this.confirmPassword = '';
+  // }
+
   PasswordShow() {
     this.showPassword = !this.showPassword;
   }
@@ -81,8 +104,7 @@ export class SignUpComponent implements OnInit{
     }
     else {
         this.isPasswordMatch = true;
-        this.register();
-        this.saveData();
+        this.signUp(this.email,this.password,this.name);
     }
   }
   

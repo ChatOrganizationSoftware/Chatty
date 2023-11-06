@@ -6,10 +6,11 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 })
 export class DataService {
 
-  constructor(private firestore: AngularFirestore) {}
+  constructor(private firestore:AngularFirestore) {}
 
-  addData(data: any) {
-    return this.firestore.collection('names').add(data);
+  getPasswordByUsername(username: string) {
+    return this.firestore.collection('users', ref => ref.where('username', '==', username)).valueChanges();
   }
+  
   
 }
