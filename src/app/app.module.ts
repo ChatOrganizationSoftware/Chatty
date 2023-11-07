@@ -12,6 +12,7 @@ import { MainComponent } from './components/main/main.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { FirebaseService } from './services/firebase.service';
 import { environment } from 'src/environments/environment';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { environment } from 'src/environments/environment';
     SignUpComponent,
     LoginComponent,
     MainComponent,
-    LogoutComponent
+    LogoutComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +46,10 @@ import { environment } from 'src/environments/environment';
       {
         path: 'logout',
         component:LogoutComponent
+      },
+      {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent
       }
     ])
   ],

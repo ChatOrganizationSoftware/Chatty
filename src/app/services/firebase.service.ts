@@ -17,7 +17,7 @@ export class FirebaseService {
       localStorage.setItem('token', 'true');
       this.router.navigate(['/main']);
     }, err => {
-      alert('something went wrong.');
+      alert('Something went wrong with forgot password.');
       this.router.navigate(['/login']);
     })
   }
@@ -25,7 +25,7 @@ export class FirebaseService {
 
   register(email: string, password: string) {
     this.fireauth.createUserWithEmailAndPassword(email, password).then(() => {
-      alert('registration successfull');
+      alert('Registration successfull!');
       this.router.navigate(['/main']);
     }, err => {
       alert('something went wrong.');
@@ -43,6 +43,20 @@ export class FirebaseService {
       alert('something went wrong.');
     })
   }
+
+
+// forgot password method
+  
+  forgotPassword(email: string) {
+
+      this.fireauth.sendPasswordResetEmail(email).then(() => {
+        alert('Password reset email sent');
+        this.router.navigate(['/login']);
+      }, err => {
+        alert('something went wrong.');
+        this.router.navigate(['/forgot-password']);
+      })
+    }
 
 
 
