@@ -1,7 +1,7 @@
 
 
 export const environment = {
-  production: false,
+    production: false,
   firebase: {
     projectId: 'chat-4ff93',
     appId: '1:198627310613:web:86bd14a591957bf55b621c',

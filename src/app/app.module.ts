@@ -11,7 +11,16 @@ import { RouterModule } from '@angular/router';
 import { MainComponent } from './components/main/main.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { FirebaseService } from './services/firebase.service';
-import { environment } from 'src/environments/environment';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { SettingsComponent } from './components/settings/settings.component';
+import { ChatsComponent } from './components/chats/chats.component';
+
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 @NgModule({
@@ -21,6 +30,10 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     LoginComponent,
     MainComponent,
     LogoutComponent,
+    ResetPasswordComponent,
+    VerifyEmailComponent,
+    SettingsComponent,
+    ChatsComponent,
     ForgotPasswordComponent
   ],
   imports: [
@@ -29,6 +42,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebase),
     RouterModule.forRoot([
       {
@@ -41,7 +55,21 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
       },
       {
         path: 'main',
-        component:MainComponent
+        component:MainComponent,
+        children:[
+          { 
+            path: '', 
+            redirectTo: 'chats', 
+            pathMatch: 'full' },
+          {
+            path: 'chats',
+            component: ChatsComponent
+          },
+          {
+            path: 'settings',
+            component: SettingsComponent
+          },
+        ]
       },
       {
         path: 'logout',
@@ -51,7 +79,10 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
         path: 'forgot-password',
         component: ForgotPasswordComponent
       }
-    ])
+    ]),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideDatabase(() => getDatabase())
   ],
   providers: [FirebaseService],
   bootstrap: [AppComponent]

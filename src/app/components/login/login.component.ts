@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { faLock,faUser } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
@@ -9,10 +10,11 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 })
 export class LoginComponent implements OnInit{
 
-  
+  showPassword = false;
 
   lock = faLock;
   user = faUser;
+  eye = faEye;
   
   email: string = '';
   password: string = '';
@@ -26,19 +28,17 @@ export class LoginComponent implements OnInit{
 
   login() {
     
-    if (this.email == '') {
-      alert("enter everything");
-      return;
+    
+    if (this.email && this.password) {
+      this.firebaseService.login(this.email, this.password);
+      this.email = '';
+      this.password = '';
     }
-    if (this.password == '') {
-      alert("enter everything");
-      return;
-    }
-
-    this.firebaseService.login(this.email, this.password);
-    this.email = '';
-    this.password = '';
+    
       
+  }
+  toggleShow() {
+    this.showPassword = !this.showPassword;
   }
 
 

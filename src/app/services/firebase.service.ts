@@ -1,14 +1,22 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
 
-  constructor(private fireauth: AngularFireAuth, private router: Router) { }
+  constructor(
+    private fireauth: AngularFireAuth,
+    private router: Router,
+    private firestore:AngularFirestore
+  ) { }
   
+  
+ 
 
   // login method
 
@@ -23,15 +31,15 @@ export class FirebaseService {
   }
   // register method
 
-  register(email: string, password: string) {
-    this.fireauth.createUserWithEmailAndPassword(email, password).then(() => {
-      alert('Registration successfull!');
-      this.router.navigate(['/main']);
-    }, err => {
-      alert('something went wrong.');
-      this.router.navigate(['/register']);
-    })
-  }
+  // register(email: string, password: string) {
+  //   this.fireauth.createUserWithEmailAndPassword(email, password).then(() => {
+  //     this.router.navigate(['/main']);
+  //     alert('Registration successfull!');
+  //   }, err => {
+  //     this.router.navigate(['/register']);
+  //     alert('something went wrong.');
+  //   })
+  // }
 
   //log out method
 
@@ -58,7 +66,14 @@ export class FirebaseService {
       })
     }
 
+  // getCurrentUser() {
+  //   return this.fireauth.authState;
+  // }
 
+  changePassword(currentPassword:string, newPassword:string){
+    const user = this.fireauth.currentUser;
+
+  }
 
 
 }

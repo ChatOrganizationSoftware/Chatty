@@ -1,0 +1,53 @@
+<div class="settings">
+    <div class="settings-container">
+        <fa-icon [icon]="arrow" class="arrow-icon" (click)="returnToMain()"></fa-icon>
+        <h2>Settings</h2>
+        <div [ngClass]="showThemeSettings ? 'active' : 'setting-options'" >
+            <div class="setting-title" (click)="showThemeSet()">
+                Theme
+            </div>
+            <div class="content">
+                <div class="theme-default" (click)="changeTheme('default')">
+                    Default
+                </div>
+                <div class="theme-dark-mode" (click)="changeTheme('dark')">
+                    Dark
+                </div>
+            </div>
+        </div>
+        
+        
+        <div [ngClass]="showBackgroundSettings ? 'active' : 'setting-options'" >
+            <div class="setting-title" (click)="showBackgroundSet()">
+                Background color
+            </div>
+            <div class="content">
+                <div class="background-default" (click)="changeBackground('#869FDD')">
+                    Default
+                </div>
+                <div class="background-green" (click)="changeBackground('#11f211')">
+                    Green
+                </div>
+                <div class="background-red" (click)="changeBackground('#fb0303')">
+                    Red
+                </div>
+            </div>
+        </div>
+        
+        <div [ngClass]="showPasswordSettings ? 'active' : 'setting-options'" >
+            <div class="setting-title" (click)="showPasswordSet()">
+                Change password
+            </div>
+            <div class="content">
+                Current password <br>
+                <input type="password" placeholder="Current password" [(ngModel)]="currentPass">  <br>
+                New password <br>
+                <input type="password" placeholder="New password" [(ngModel)]="newPass"><br>
+                Confirm new password <br>
+                <input type="password" placeholder="Confirm new password" [(ngModel)]="confirmPass"> <br>
+                <button (click)="changePassword()">Change</button>
+            </div>
+        </div>
+        
+    </div>
+</div>
