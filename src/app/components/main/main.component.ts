@@ -5,6 +5,11 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+
+import { StylingService } from 'src/app/shared/styling.service';
+
+
 
 @Component({
   selector: 'main',
@@ -31,7 +36,10 @@ export class MainComponent implements OnInit{
   constructor(
     private firebaseService: FirebaseService,
     private afAuth: AngularFireAuth,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private router: Router,
+    private route: ActivatedRoute,
+    public styleService: StylingService
   ) {}
   
   ngOnInit(): void {
@@ -72,6 +80,12 @@ export class MainComponent implements OnInit{
     this.showConfirmation = false; // Onay iletişim kutusunu gizle
   }
   
+  
+  
+  openSettings(){
+    this.router.navigate(['settings'], {relativeTo: this.route})
+  }
+
   logout() {
     this.firebaseService.logout();
   }

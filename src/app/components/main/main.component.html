@@ -20,7 +20,7 @@
                     <fa-icon [icon]="darkMode"></fa-icon>
                 </button>
     
-                <button class="settings-icon">
+                <button class="settings-icon" (click)="openSettings()">
                     <fa-icon [icon]="settings"></fa-icon>
                 </button> 
                 <button class="log-out-icon" (click)="toggleIcon()">
@@ -34,21 +34,16 @@
                 <button (click)="cancelLogout()" class="deny">Hayır</button>
             </div>
             
-            <div class="messages">
-                <div class="search-message">
-                    <input type="text" placeholder="search">
-                </div>
-                <div class="people"></div>
-            </div>
+            <router-outlet></router-outlet>
     
-            <div class="chatting">
+            <div class="chatting" [ngStyle]="styleService.background" >
                 <div class="sended-messages"></div>
                 <div class="type-message">
                     <input type="text" placeholder="   your message here...">
                     <button class="send-button">
                         <fa-icon [icon]="send"></fa-icon>
                     </button>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
