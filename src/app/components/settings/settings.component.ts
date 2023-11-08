@@ -18,31 +18,36 @@ export class SettingsComponent {
 
   theme = 'Default';
 
-  currentPass = "";
-  newPass = "";
-  confirmPass = "";
+  currentPass = "";   // Stores the current password when entered
+  newPass = "";       // Stores the new password when entered
+  confirmPass = "";   // Stores the confirm password when entered
 
   constructor(private router: Router, private styleService: StylingService, private firebaseService: FirebaseService){}
 
 
+  // Classes the settings
   returnToMain(){
     this.router.navigate(['main'])
   }
 
+  // Opens/closses theme options
   showThemeSet(){
     this.showThemeSettings = !this.showThemeSettings;
   }
 
+  // Sends selected theme to service
   changeTheme(theme:string){
     this.theme = theme;
     this.styleService.updateTheme(this.theme);
     
   }
 
+  // Opens/closses change password option
   showPasswordSet(){
     this.showPasswordSettings = !this.showPasswordSettings;
   }
 
+  // Checks the fields and calls changePassword function of service
   changePassword(){
     if(this.currentPass!="" || this.newPass!="" || this.confirmPass!=""){
       if(this.newPass == this.confirmPass){

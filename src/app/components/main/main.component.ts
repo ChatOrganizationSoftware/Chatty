@@ -83,20 +83,14 @@ export class MainComponent implements OnInit{
   }
   
   openSettings(){
-    if (this.router.url.indexOf('/settings') > -1)
+    
+    if (this.router.url.indexOf('/settings') > -1)    // If the settings are already opened ,clases it
       this.router.navigate(['main']);
     else
-      this.router.navigate(['settings'], {relativeTo: this.route});
+      this.router.navigate(['settings'], {relativeTo: this.route});   // Opens settings
   }
 
   logout() {
     this.firebaseService.logout();
-  }
-
-  toggleDarkMode() {
-    if(this.theme == "DarkMode")
-      this.theme = "Default";
-    this.theme = "DarkMode;"
-  }
-  
+  }  
 }
