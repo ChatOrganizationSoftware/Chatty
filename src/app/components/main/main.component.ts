@@ -31,6 +31,8 @@ export class MainComponent implements OnInit{
   showConfirmation = false; // Başlangıçta onay iletişim kutusu gizlenmiş
   confirmationText = 'Çıkış yapmak istediğinize emin misiniz?';
   darkMode = faMoon;
+
+  theme = "Default";
   
 
   constructor(
@@ -80,20 +82,21 @@ export class MainComponent implements OnInit{
     this.showConfirmation = false; // Onay iletişim kutusunu gizle
   }
   
-  
-  
   openSettings(){
-    this.router.navigate(['settings'], {relativeTo: this.route})
+    if (this.router.url.indexOf('/settings') > -1)
+      this.router.navigate(['main']);
+    else
+      this.router.navigate(['settings'], {relativeTo: this.route});
   }
 
   logout() {
     this.firebaseService.logout();
   }
 
-  isDarkModeEnabled = false;
-
   toggleDarkMode() {
-    this.isDarkModeEnabled = !this.isDarkModeEnabled;
+    if(this.theme == "DarkMode")
+      this.theme = "Default";
+    this.theme = "DarkMode;"
   }
   
 }

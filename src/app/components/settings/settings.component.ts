@@ -13,14 +13,10 @@ export class SettingsComponent {
   arrow = faArrowLeft;
 
   showThemeSettings = false;
-  showBackgroundSettings = false;
   showPasswordSettings = false;
 
-  background = {
-                'background-color': '#869FDD'
-                }
 
-  theme = 'default';
+  theme = 'Default';
 
   currentPass = "";
   newPass = "";
@@ -39,15 +35,8 @@ export class SettingsComponent {
 
   changeTheme(theme:string){
     this.theme = theme;
-  }
-
-  showBackgroundSet(){
-    this.showBackgroundSettings = !this.showBackgroundSettings;
-  }
-
-  changeBackground(color:string){
-    this.background['background-color'] = color;
-    this.styleService.updateBackgroundColor(this.background)
+    this.styleService.updateTheme(this.theme);
+    
   }
 
   showPasswordSet(){

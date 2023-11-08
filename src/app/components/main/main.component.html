@@ -1,4 +1,4 @@
-<div id="dark-mode-container" [ngClass]="{'dark-mode': isDarkModeEnabled}">
+<div id="dark-mode-container" [ngClass]="{'dark-mode': this.styleService.theme=='DarkMode'}">
     <div class="body">
         <div class="container">
             <div class="nav">
@@ -16,9 +16,6 @@
                     <fa-icon [icon]="bell"></fa-icon>
                 </button>
                 <div class="space"></div>
-                <button class="dark-mode-icon" (click)="toggleDarkMode()">
-                    <fa-icon [icon]="darkMode"></fa-icon>
-                </button>
     
                 <button class="settings-icon" (click)="openSettings()">
                     <fa-icon [icon]="settings"></fa-icon>
@@ -36,7 +33,7 @@
             
             <router-outlet></router-outlet>
     
-            <div class="chatting" [ngStyle]="styleService.background" >
+            <div class="chatting" >
                 <div class="sended-messages"></div>
                 <div class="type-message">
                     <input type="text" placeholder="   your message here...">
