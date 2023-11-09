@@ -95,7 +95,7 @@ button{
     position: fixed;
     color: white;
     bottom: 50px;
-    left: 250px;
+    left: 200px;
     background-color: #869FDD;
     padding: 10px;
     border: 1px solid rgb(188, 11, 11); /* Evet düğmesi çerçeve rengi */
@@ -263,7 +263,7 @@ button{
     position: fixed;
     color: white;
     bottom: 50px;
-    left: 250px;
+    left: 200px;
     background-color: darkgray;
     padding: 10px;
     border: 1px solid rgb(188, 11, 11); /* Evet düğmesi çerçeve rengi */
