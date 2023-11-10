@@ -47,11 +47,11 @@ export class FirebaseService {
           this.sendEmailForVarification(userCredential.user);
         } else {
           // Handle the case where userCredential.user is null
-          console.error('User registration failed');
+          alert('User registration failed');
         }
       })
       .catch((error) => {
-        console.error(error);
+        alert('Something went wrong. Please make sure you provide a valid email.');
       });
   }
 
@@ -105,7 +105,7 @@ export class FirebaseService {
   changePassword(email: string){
     
     this.fireauth.sendPasswordResetEmail(email).then(() => {
-      alert('Password change email sent');
+      alert('Password change link has sent. Please login again after changing the password.');
       this.router.navigate(['/login']);
     }, err => {
       alert("Something went wrong. Couldn't send the link to you.");

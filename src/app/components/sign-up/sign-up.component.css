@@ -77,6 +77,8 @@ body{
     margin-bottom: 20px;
 }
 .continue{
+    cursor: pointer;
+    
     text-align: center;
     width: 150px;
     height: 36px;
@@ -86,6 +88,23 @@ body{
     font-family: 'Open Sans';
     font-size: 18px;
     color: #FFFFFF;
+
+    margin-top: 10px;
+}
+.return-login{
+    cursor: pointer;
+    
+    text-align: center;
+    width: 140px;
+    height: 25px;
+    border-radius:20px;
+    background-color: #2F327C;
+    border: 2px #2F327C solid;
+    font-family: 'Open Sans';
+    font-size: 18px;
+    color: #FFFFFF;
+
+    margin-top: 20px;
 }
 input{
     flex: 1;
