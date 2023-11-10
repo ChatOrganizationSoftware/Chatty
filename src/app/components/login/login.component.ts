@@ -8,6 +8,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit{
 
   showPassword = false;
@@ -16,8 +17,8 @@ export class LoginComponent implements OnInit{
   user = faUser;
   eye = faEye;
   
-  email: string = '';
-  password: string = '';
+  email = "";
+  password = "";
  
   constructor(public firebaseService:FirebaseService) {
   }
@@ -27,16 +28,17 @@ export class LoginComponent implements OnInit{
   }
 
   login() {
-    
-    
-    if (this.email && this.password) {
+    if (this.email != "" && this.password != "") {      
       this.firebaseService.login(this.email, this.password);
-      this.email = '';
-      this.password = '';
+      this.email = "";
+      this.password = "";
     }
-    
-      
+    else{             // If there is any empty field
+      alert("Please fill all the fields.");
+    }      
   }
+
+  // Show/hide password
   toggleShow() {
     this.showPassword = !this.showPassword;
   }

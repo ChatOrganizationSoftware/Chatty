@@ -12,7 +12,8 @@ export class FirebaseService {
   constructor(
     private fireauth: AngularFireAuth,
     private router: Router,
-    private firestore:AngularFirestore
+    private firestore:AngularFirestore,
+    private auth: AngularFireAuth
   ) { }
   
   
@@ -21,25 +22,55 @@ export class FirebaseService {
   // login method
 
   login(email:string,password:string) {
-    this.fireauth.signInWithEmailAndPassword(email, password).then(() => {
+    this.fireauth.signInWithEmailAndPassword(email, password).then((res) => {
       localStorage.setItem('token', 'true');
-      this.router.navigate(['/main']);
+      if(res.user?.emailVerified){
+        this.router.navigate(['/main']);
+      }
+      else{
+        this.router.navigate(['/verify-email']);
+      }
     }, err => {
-      alert('Something went wrong with forgot password.');
+      alert('Something went wrong. Please make sure you typed your email and password correctly.');
       this.router.navigate(['/login']);
     })
   }
-  // register method
 
-  // register(email: string, password: string) {
-  //   this.fireauth.createUserWithEmailAndPassword(email, password).then(() => {
-  //     this.router.navigate(['/main']);
-  //     alert('Registration successfull!');
-  //   }, err => {
-  //     this.router.navigate(['/register']);
-  //     alert('something went wrong.');
-  //   })
-  // }
+  // Sign in method
+  register(email: string, password: string,name: string) {
+    this.auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        if (userCredential.user) {
+          const uid = userCredential.user.uid;
+          this.storeUserData(uid, name);
+          localStorage.setItem('token', 'true');
+          this.sendEmailForVarification(userCredential.user);
+        } else {
+          // Handle the case where userCredential.user is null
+          alert('User registration failed');
+        }
+      })
+      .catch((error) => {
+        alert('Something went wrong. Please make sure you provide a valid email.');
+      });
+  }
+
+  // Stores newly registered user's name in firestore.
+  storeUserData(uid: string, name: string) {
+    this.firestore.collection('users').doc(uid).set({
+      name: name
+    });
+  }
+
+  // Send verification link
+  sendEmailForVarification(user:any){
+    user.sendEmailVerification().then( (res:any) => {
+      this.router.navigate(['/verify-email']);
+      alert("Link has successfully sent to your email. Please verify your email as soon as possible.");
+    }, (err:any)=>{
+      alert('Something went wrong. Not able to send verification link to your email.');
+    })
+  }
 
   //log out method
 
@@ -48,7 +79,7 @@ export class FirebaseService {
       localStorage.removeItem('token');
       this.router.navigate(['/logout']);
     }, err => {
-      alert('something went wrong.');
+      alert('Something went wrong.');
     })
   }
 
@@ -61,7 +92,7 @@ export class FirebaseService {
         alert('Password reset email sent');
         this.router.navigate(['/login']);
       }, err => {
-        alert('something went wrong.');
+        alert("Something went wrong. Couldn't send link to you");
         this.router.navigate(['/forgot-password']);
       })
     }
@@ -70,9 +101,16 @@ export class FirebaseService {
   //   return this.fireauth.authState;
   // }
 
-  changePassword(currentPassword:string, newPassword:string){
-    const user = this.fireauth.currentUser;
-
+  // If user wants to change his/her password from settings menu
+  changePassword(email: string){
+    
+    this.fireauth.sendPasswordResetEmail(email).then(() => {
+      alert('Password change link has sent. Please login again after changing the password.');
+      this.router.navigate(['/login']);
+    }, err => {
+      alert("Something went wrong. Couldn't send the link to you.");
+      this.router.navigate(['/main/settings']);
+    })
   }
 
 

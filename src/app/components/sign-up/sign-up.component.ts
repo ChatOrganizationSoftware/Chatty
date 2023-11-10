@@ -50,48 +50,24 @@ export class SignUpComponent implements OnInit{
   //     password:this.password
   //   });
   // }
-
-  storeUserData(uid: string, name: string) {
-    this.firestore.collection('users').doc(uid).set({
-      name: name
-    });
-  }
    
-  signUp(email: string, password: string,name: string) {
-    this.auth.createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        if (userCredential.user) {
-          const uid = userCredential.user.uid;
-          this.storeUserData(uid, name);
-          localStorage.setItem('token', 'true');
-          this.router.navigate(['/main']);
-        } else {
-          // Handle the case where userCredential.user is null
-          console.error('User registration failed');
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  signUp() {
+    if(this.email=="" || this.password=="" || this.name=="")
+      alert("Please fill all the fields.")
+    else{
+      this.firebaseService.register(this.email, this.password, this.name);
+      this.email = "";
+      this.password = "";
+      this.confirmPassword = "";
+      this.name = "";
+    }
   }
-  
 
-  
-  
-
-
-  // register() {
-    
-  //   this.firebaseService.register(this.email, this.password);
-  //   this.name = '';
-  //   this.email = '';
-  //   this.password = '';
-  //   this.confirmPassword = '';
-  // }
-
+  // Show/hide password
   PasswordShow() {
     this.showPassword = !this.showPassword;
   }
+
   ConfirmPasswordShow() {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
@@ -99,16 +75,17 @@ export class SignUpComponent implements OnInit{
   checkPasswordMatch() {
     if (this.password !== this.confirmPassword) {
          this.isPasswordMatch = false;
-         alert('Passwords do not match. Please try again.');
+         alert('Passwords do not match. Please make sure they are same.');
         return;
     }
     else {
         this.isPasswordMatch = true;
-        this.signUp(this.email,this.password,this.name);
+        this.signUp();
     }
   }
-  
-  
-  
+
+  returnToLogin(){
+    this.router.navigate(['/login']);
+  }
   
 }

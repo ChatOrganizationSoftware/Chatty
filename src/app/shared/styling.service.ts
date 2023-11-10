@@ -4,13 +4,12 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class StylingService {
-  background!: any;
   
-  theme = 'default'
+  theme = 'Default';
 
   constructor() { }
 
-  updateBackgroundColor(backgroundColors:any){
-    this.background = backgroundColors;
+  updateTheme(theme: string){
+    this.theme = theme;
   }
 }

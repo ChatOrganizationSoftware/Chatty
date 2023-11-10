@@ -43,9 +43,6 @@
 .space{
     flex-grow: 10;
 }
-.dark-mode-icon{
-    flex-grow: 1;
-}
 .settings-icon{
     flex-grow: 1;
 }

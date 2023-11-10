@@ -78,6 +78,10 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
       {
         path: 'forgot-password',
         component: ForgotPasswordComponent
+      },
+      {
+        path: 'reset-password',
+        component: ResetPasswordComponent
       }
     ]),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
