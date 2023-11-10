@@ -42,12 +42,13 @@ p{
 }
 
 button{
+    cursor: pointer;
+    
     position: absolute;
     top: 700px;
     background-color: rgb(134, 132, 225);
 
     height: 30px;
     width: 120px;
-
     border-radius: 30px;
 }

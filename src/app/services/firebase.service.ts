@@ -31,7 +31,7 @@ export class FirebaseService {
         this.router.navigate(['/verify-email']);
       }
     }, err => {
-      alert('something went wrong. Please check the information you filled.');
+      alert('Something went wrong. Please make sure you typed your email and password correctly.');
       this.router.navigate(['/login']);
     })
   }
@@ -44,7 +44,6 @@ export class FirebaseService {
           const uid = userCredential.user.uid;
           this.storeUserData(uid, name);
           localStorage.setItem('token', 'true');
-          alert('registration successfull');
           this.sendEmailForVarification(userCredential.user);
         } else {
           // Handle the case where userCredential.user is null
@@ -80,7 +79,7 @@ export class FirebaseService {
       localStorage.removeItem('token');
       this.router.navigate(['/logout']);
     }, err => {
-      alert('something went wrong.');
+      alert('Something went wrong.');
     })
   }
 

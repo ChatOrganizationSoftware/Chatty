@@ -44,7 +44,7 @@
     background-color: #b9bbb8;
 }
 
-.content div:hover{
+.sub-settings:hover{
     background-color: #828482;
 }
 
@@ -60,25 +60,27 @@
 
 .content{
     background-color: #f2f2f2;
-    padding-left: 0px;
 
     font-size: 20px;
 }
 
-.content div{
+.sub-settings{
     cursor:pointer;
     padding-left: 10px;
 }
 
-.content p{
-    padding-top: 5px;
-}
-
 .content button{
+    cursor: pointer;
+    
     position: relative;
-    left: 10px;
-    height: 20px;
+    left: 150px;
+    bottom: 2px;
+    height: 25px;
+    width: 60px;
+
+    font-size: 15px;
 
     border-radius: 30px;
     background-color: rgb(164, 168, 168);
 }
+

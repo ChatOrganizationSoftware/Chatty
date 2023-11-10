@@ -4,6 +4,8 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+
+    font-family: sans-serif;
 }
 
 fa-icon{
@@ -25,6 +27,8 @@ h2{
 }
 
 .return-login{
+    cursor: pointer;
+
     position: relative;
     top: -40px;
     left: 180px;
@@ -33,11 +37,11 @@ h2{
     height: 30px;
     border-radius: 10px;
     border-width: 0px;
-
-    font-family: sans-serif;
 }
 
 .resend-link{
+    cursor: pointer; 
+
     position: relative;
     top: -40px;
     left: 220px;
@@ -46,6 +50,4 @@ h2{
     height: 30px;
     border-radius: 10px;
     border-width: 0px;
-
-    font-family: sans-serif;
 }

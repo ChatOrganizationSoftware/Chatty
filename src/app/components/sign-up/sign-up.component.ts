@@ -58,10 +58,12 @@ export class SignUpComponent implements OnInit{
       this.firebaseService.register(this.email, this.password, this.name);
       this.email = "";
       this.password = "";
+      this.confirmPassword = "";
       this.name = "";
     }
   }
 
+  // Show/hide password
   PasswordShow() {
     this.showPassword = !this.showPassword;
   }
@@ -73,7 +75,7 @@ export class SignUpComponent implements OnInit{
   checkPasswordMatch() {
     if (this.password !== this.confirmPassword) {
          this.isPasswordMatch = false;
-         alert('Passwords do not match. Please try again.');
+         alert('Passwords do not match. Please make sure they are same.');
         return;
     }
     else {
