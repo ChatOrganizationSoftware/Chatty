@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 
 @Component({
@@ -8,5 +9,11 @@ import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 })
 export class LogoutComponent {
   check=faCircleCheck;
+
+  constructor(private router: Router){}
+
+  returnToLogin(){
+    this.router.navigate(['login']);
+  }
 
 }

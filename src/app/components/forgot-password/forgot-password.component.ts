@@ -30,11 +30,14 @@ export class ForgotPasswordComponent implements OnInit {
   // Define the forgotPassword function
   forgotPassword() {
 
-
-    // Call the FirebaseService forgotPassword function
-    this.firebaseService.forgotPassword(this.email);
-    // Clear the email field
-    this.email = '';
+    if(this.email == "")
+      alert("Please enter your email address");
+    else{
+      // Call the FirebaseService forgotPassword function
+      this.firebaseService.forgotPassword(this.email);
+      // Clear the email field
+      this.email = '';
+    }
   }
 
 

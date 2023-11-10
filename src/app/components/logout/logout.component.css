@@ -24,7 +24,7 @@ hr{
 
 h1{
     position: absolute;
-    top: 550px;
+    top: 520px;
 
     font-weight: 100;
     font-size: 50px;
@@ -33,10 +33,21 @@ h1{
 
 p{
     position: absolute;
-    top: 630px;
+    top: 600px;
 
     font-weight: 100;
     font-size: 35px;
     font-family: sans-serif;
     color: gray;
+}
+
+button{
+    position: absolute;
+    top: 700px;
+    background-color: rgb(134, 132, 225);
+
+    height: 30px;
+    width: 120px;
+
+    border-radius: 30px;
 }

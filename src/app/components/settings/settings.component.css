@@ -38,7 +38,6 @@
 
 .setting-title{
     cursor: pointer;
-
 }
 
 .active, .setting-title:hover{
@@ -71,11 +70,8 @@
     padding-left: 10px;
 }
 
-.content input{
-    position: relative;
-    left: 10px;
-    height: 20px;
-    width: 300px;
+.content p{
+    padding-top: 5px;
 }
 
 .content button{

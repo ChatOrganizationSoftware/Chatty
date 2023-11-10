@@ -12,11 +12,21 @@ export class ResetPasswordComponent implements OnInit{
   email: string = '';
 
 
-  constructor(private fire:FirebaseService){}
+  constructor(private firebaseService:FirebaseService){}
 
   ngOnInit(): void {
     
   }
 
-
+  // Change password method 
+  changePassword() {
+    if(this.email == "")
+      alert("Please enter your email address");
+    else{
+      // Call the FirebaseService forgotPassword function
+      this.firebaseService.changePassword(this.email);
+      // Clear the email field
+      this.email = '';
+    }
+  }
 }

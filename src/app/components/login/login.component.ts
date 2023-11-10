@@ -27,16 +27,17 @@ export class LoginComponent implements OnInit{
   }
 
   login() {
-    
-    
-    if (this.email && this.password) {
+    if (this.email && this.password) {      
       this.firebaseService.login(this.email, this.password);
       this.email = '';
       this.password = '';
     }
-    
-      
+    else{             // If there is any empty field
+      alert("Please fill all the fields.");
+    }      
   }
+
+  // Show/hide password
   toggleShow() {
     this.showPassword = !this.showPassword;
   }

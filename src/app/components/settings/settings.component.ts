@@ -18,10 +18,6 @@ export class SettingsComponent {
 
   theme = 'Default';
 
-  currentPass = "";   // Stores the current password when entered
-  newPass = "";       // Stores the new password when entered
-  confirmPass = "";   // Stores the confirm password when entered
-
   constructor(private router: Router, private styleService: StylingService, private firebaseService: FirebaseService){}
 
 
@@ -49,16 +45,6 @@ export class SettingsComponent {
 
   // Checks the fields and calls changePassword function of service
   changePassword(){
-    if(this.currentPass!="" || this.newPass!="" || this.confirmPass!=""){
-      if(this.newPass == this.confirmPass){
-        this.firebaseService.changePassword(this.currentPass, this.newPass)
-      }
-      else{
-        alert('New password and Confirm password should be same. Please check them.')
-      }
-    }
-    else{
-      alert('Please make sure you filled all the fields.')
-    }
+    this.router.navigate(['reset-password']);
   }
 }
