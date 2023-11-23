@@ -51,7 +51,7 @@ export class FirebaseService {
         }
       })
       .catch((error) => {
-        alert('Something went wrong.');
+        alert(error);
       });
   }
 
