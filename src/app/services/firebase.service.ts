@@ -51,7 +51,7 @@ export class FirebaseService {
         }
       })
       .catch((error) => {
-        alert('Something went wrong. Please make sure you provide a valid email.');
+        alert('Something went wrong.');
       });
   }
 
