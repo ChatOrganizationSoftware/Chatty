@@ -30,8 +30,8 @@ h2{
     cursor: pointer;
 
     position: relative;
-    top: -40px;
-    left: 180px;
+    top: -20px;
+    left: 240px;
 
     background-color: rgb(161, 159, 240);
     height: 30px;
@@ -39,15 +39,3 @@ h2{
     border-width: 0px;
 }
 
-.resend-link{
-    cursor: pointer; 
-
-    position: relative;
-    top: -40px;
-    left: 220px;
-
-    background-color: rgb(161, 159, 240);
-    height: 30px;
-    border-radius: 10px;
-    border-width: 0px;
-}
