@@ -31,13 +31,32 @@
                 <button (click)="cancelLogout()" class="deny">Hayır</button>
             </div>
             
-            <router-outlet></router-outlet>
+            <div class="messages">
+                <div class="search-message">
+                    <input type="text" [(ngModel)]="query" placeholder="Search users" (input)="searchUsers()" />
+                </div>
+                <div class="people">
+                    <div *ngIf="searchResults">
+                        <ul>
+                          <li *ngFor="let user of searchResults" (click)="selectUser(user)">
+                            {{ user.name }}
+                          </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
     
             <div class="chatting" >
+                <div *ngIf="selectedUserName">
+                    <p style="font-size: 40px;"> Chatting with {{ selectedUserName }}</p>
+                </div>
+                <div *ngFor="let message of messages">
+                    <p>{{ message.message }}</p>
+                  </div>
                 <div class="sended-messages"></div>
                 <div class="type-message">
-                    <input type="text" placeholder="   your message here...">
-                    <button class="send-button">
+                    <input type="text" [(ngModel)]="newMessage" placeholder="Type your message" />
+                    <button class="send-button" (click)="sendMessage()">
                         <fa-icon [icon]="send"></fa-icon>
                     </button>
                 </div>

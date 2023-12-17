@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { StylingService } from 'src/app/shared/styling.service';
+import { ChatService } from 'src/app/services/chat.service';
 
 
 
@@ -29,11 +30,25 @@ export class MainComponent implements OnInit{
   
   userId: string;
   showConfirmation = false; // Başlangıçta onay iletişim kutusu gizlenmiş
-  confirmationText = 'Çıkış yapmak istediğinize emin misiniz?';
+  confirmationText = 'Çikiş yapmak istediğinize emin misiniz?';
   darkMode = faMoon;
 
   theme = "Default";
-  
+
+  selectedUserName: string = ''; // Add this property
+
+
+  query: string = '';
+  searchResults: any[];
+
+  messages: any[] = [];
+  newMessage: string = '';
+  selectedUser: any;
+
+  currentUserId: string; // Add this property
+
+
+
 
   constructor(
     private firebaseService: FirebaseService,
@@ -41,8 +56,18 @@ export class MainComponent implements OnInit{
     private firestore: AngularFirestore,
     private router: Router,
     private route: ActivatedRoute,
-    public styleService: StylingService
-  ) {}
+    public styleService: StylingService,
+    private chatService:ChatService
+  ) {
+
+    this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.currentUserId = user.uid;
+      }
+    });
+   }
+  
+  
   
   ngOnInit(): void {
     this.afAuth.authState.subscribe((name) => {
@@ -54,6 +79,50 @@ export class MainComponent implements OnInit{
       }
     });
   }
+
+  searchUsers() {
+    this.chatService.searchUsers(this.query).subscribe((results) => {
+      this.searchResults = results;
+    });
+  }
+
+  selectUser(user: any) {
+    this.selectedUserName = user.name;
+    this.searchResults = []; // Hide the user list after selecting a user
+    this.query = ''; // Clear the search input
+    this.loadMessages();
+
+
+
+  }
+
+  loadMessages() {
+    if (this.selectedUser) {
+      this.chatService.getMessages(this.selectedUser.uid).subscribe((messages) => {
+        this.messages = messages;
+      });
+    }
+  }
+
+  sendMessage() {
+    if (this.selectedUser && this.newMessage.trim() !== '') {
+      const senderId = this.currentUserId;
+      const receiverId = this.selectedUser.uid;
+      const message = this.newMessage.trim();
+  
+      console.log('Sending Message:', { senderId, receiverId, message });
+  
+      this.chatService.sendMessage(senderId, receiverId, message).then(() => {
+        console.log('Message Sent Successfully!');
+        // Message sent successfully, you can update UI or clear input
+        this.newMessage = '';
+        this.loadMessages(); // Reload messages after sending a new one
+      }).catch((error) => {
+        console.error('Error Sending Message:', error);
+      });
+    }
+  }
+  
 
   getFirstWord(input: string){
     const words = input.split(' ');
