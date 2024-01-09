@@ -29,20 +29,22 @@ body{
     background-color: #FFFFFF;
     border-radius: 20px;
 }
-.logo{
-    width: 140px;
-    height: 103px;
-    overflow: hidden;
+.logo {
+    width: 100%; /* Div'in genişliğini %100 yaparak içindeki içeriği ortalar */
+    height: 70px; /* Yüksekliği sabit tut */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* İçeriği yatay olarak ortala */
+    align-items: center; /* İçeriği dikey olarak ortala */
+    overflow: hidden;
 }
+
 .logo img {
-    max-width: 100%; 
-    max-height: 100%; 
-    width: auto;
-    height: auto; 
+    max-width: 100px; /* Maksimum genişlik */
+    max-height: 70px; /* Maksimum yükseklik */
+    object-fit: contain; /* Resmi kutuya sığdır */
+    object-position: center; /* Resmi merkezde hizala */
 }
+
 
 .create-account{
     text-align: center;
@@ -51,7 +53,7 @@ body{
     font-weight: 700;
     width: 288px;
     height: 36px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     color: #0215e2;
 }
 .name{
@@ -76,6 +78,32 @@ body{
     height: 36px;
     margin-bottom: 20px;
 }
+.kvkk-checkbox { 
+        display: flex;
+        align-items: center; /* İçerikleri dikey olarak hizala */
+        justify-content: flex-start; /* İçerikleri sola hizala */
+        width: 288px; /* Genişliği diğer form elemanları ile aynı yap */
+        margin: 0 auto 20px; /* Üst ve alt marjları ayarla, yatayda merkezle */
+    
+}
+
+.kvkk-checkbox input[type="checkbox"] {
+    margin-right: 10px; /* Checkbox ve metin arasında boşluk */
+}
+
+.kvkk-checkbox a {
+    color: #0215e2; /* Bağlantı rengi */
+    text-decoration: underline; /* Altı çizili */
+    margin-right: 5px; /* Bağlantı ve metin arasında boşluk */
+}
+
+.kvkk-checkbox div {
+    color: red; /* Hata mesajı rengi */
+    font-size: 14px; /* Hata mesajı font boyutu */
+    margin-top: 5px; /* Hata mesajı için üst marj */
+}
+
+
 .continue{
     cursor: pointer;
     
@@ -88,8 +116,8 @@ body{
     font-family: 'Open Sans';
     font-size: 18px;
     color: #FFFFFF;
+    margin-bottom: 10px;
 
-    margin-top: 10px;
 }
 .return-login{
     cursor: pointer;
@@ -103,8 +131,6 @@ body{
     font-family: 'Open Sans';
     font-size: 18px;
     color: #FFFFFF;
-
-    margin-top: 20px;
 }
 input{
     flex: 1;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { Users } from 'src/app/model/users';
@@ -26,6 +27,7 @@ export class SignUpComponent implements OnInit{
   password: string = '';
   confirmPassword: string = '';
   isPasswordMatch = true;
+  signupForm: any;
  
  
   constructor(
@@ -35,6 +37,15 @@ export class SignUpComponent implements OnInit{
     private router: Router,
     private auth: AngularFireAuth
   ) {
+
+    this.signupForm = new FormGroup({
+      // Diğer alanlar...
+      'kvkk': new FormControl(false, Validators.requiredTrue)
+    });
+  }
+
+  get kvkkControl() {
+    return this.signupForm.get('kvkk');
   }
 
   ngOnInit(): void {
@@ -73,16 +84,35 @@ export class SignUpComponent implements OnInit{
   }
 
   checkPasswordMatch() {
+
     if (this.password !== this.confirmPassword) {
-         this.isPasswordMatch = false;
-         alert('Passwords do not match. Please make sure they are same.');
-        return;
+      this.isPasswordMatch = false;
+        alert('Passwords do not match. Please make sure they are same.');
+          return;
     }
     else {
-        this.isPasswordMatch = true;
+      this.isPasswordMatch = true;
         this.signUp();
     }
+
   }
+
+  onContinueClick() {
+    const kvkkChecked = this.signupForm.get('kvkk').value;
+  
+    if (!kvkkChecked) {
+      alert('Please read and agree to the User Agreement and Privacy Policy.');
+      return;
+    }
+  
+    // "Continue" butonuna tıklandığında yapılacak işlemleri burada yerine getirebilirsiniz.
+    // Örneğin, "Confirm Password" fonksiyonunu burada çağırabilirsiniz.
+    else{
+      this.checkPasswordMatch();
+    }  
+
+  }
+  
 
   returnToLogin(){
     this.router.navigate(['/login']);

@@ -24,8 +24,16 @@
                 <fa-icon [icon]="eye"></fa-icon>
             </div>
         </div>
-        <button class="continue" (click)="checkPasswordMatch()">Continue</button>
+            <div class="kvkk-checkbox">
+                <input type="checkbox" [formControl]="kvkkControl">
+                <label>
+                    I have read and agree to the <a href="assets/kvkk.html" target="_blank">User Agreement and Privacy Policy</a>
+                </label>
+                <div *ngIf="signupForm?.get('kvkk')?.invalid && (signupForm?.get('kvkk')?.dirty || signupForm?.get('kvkk')?.touched)">
+                    Please read and agree to the User Agreement and Privacy Policy.
+                </div>
+        </div>
+        <button class="continue" type="button" (click)="onContinueClick()">Continue</button>
         <button class="return-login" (click)="returnToLogin()">Return to Login</button>
     </div>
 </div>
-
