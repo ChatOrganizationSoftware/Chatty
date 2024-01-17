@@ -43,17 +43,44 @@
                     <input type="text"  placeholder="Search users"  />
                 </div>
                 <div class="people">
-                   <p *ngFor="let chat of people">
-                    {{chat.username}}
+                   <div *ngFor="let chat of people" class="chatPeople" (click)="getChats(chat)">
+                    <div [ngSwitch]="chat.profilePhoto" >
+                        <div *ngSwitchCase="''">
+                        <fa-icon [icon]="user" style="font-size: 30px; margin-left: 10px;"></fa-icon>     
+                        </div>
+                        <div *ngSwitchDefault>
+                          <img src={{chat.profilePhoto}} alt="profile Photo" style="width: 40px; height: 40px; border-radius: 50%; margin-left: 5px;">     
+                        </div>
+                    </div>
+                    <span style="margin-left:15px ;">
+                        {{chat.username}}
+                    </span>
+                    
                     <br>
-                    {{chat.profilePhoto}}
-                   </p>
+                    
+                   </div>
                    
                 </div>
             </div>
     
             <div class="chatting" >
+                <div class="chatPanel">
+                    <div [ngSwitch]="selectedUserPhoto" style="margin-top:5px;" >
+                        <div *ngSwitchCase="''">
+                        <fa-icon [icon]="user" style="font-size: 30px; margin-left: 10px;"></fa-icon>     
+                        </div>
+                        <div *ngSwitchDefault>
+                          <img src={{selectedUserPhoto}} alt="profile Photo" style="width: 40px; height: 40px; border-radius: 50%; margin-left: 5px;">     
+                        </div>
+                    </div>
+                    <p style="margin-left: 10px;">
+                        {{selectedUserName}}
+                    </p>
+                </div>
                 <div class="sended-messages">
+                    <div *ngFor="let message of messages">
+                       {{message.senderId}}
+                    </div>
                     
                 </div>
                 <div class="type-message">

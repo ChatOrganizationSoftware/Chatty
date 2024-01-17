@@ -65,6 +65,16 @@
     height: 50px;
     flex-grow: 1;
 }
+.chatPeople{
+    width: 400px;
+    height: 50px;
+    background-color: bisque;
+    margin: 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center; 
+    justify-content:flex-start;
+}
 .search-message input{
     top: 30px;
     left: 20px;
@@ -91,6 +101,22 @@
 }
 .sended-messages{
     flex-grow: 20;
+    
+    
+}
+.chatPanel{
+    box-sizing: border-box;
+    flex-grow: 1;
+    display: flex;
+    margin-top: 30px;
+    align-items: center; 
+    justify-content:flex-start;
+    background-color: coral;
+    width: 90%;
+    border-radius: 20px;
+    height: 30px;
+    
+    
 }
 .type-message{
     flex-grow: 1;

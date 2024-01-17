@@ -33,6 +33,7 @@ export class MainComponent implements OnInit{
   send = faPaperPlane;
   name: any;
   profilePhotoUrl: any;
+  messages: any;
   
   flag = true;
   
@@ -43,7 +44,9 @@ export class MainComponent implements OnInit{
 
   theme = "Default";
 
-  selectedUserName: string = ''; // Add this property
+  selectedUserName: string = ''; 
+  selectedUserPhoto: string = ''; 
+  
   
   chats: any;
   people:any[]=[];
@@ -109,13 +112,14 @@ export class MainComponent implements OnInit{
   getChatInformation() {
       
     this.people=[];
-    
-    
+  
     for (const key of Object.keys(this.chats)) {
      
       this.db.object(`/users/${key}`).valueChanges().subscribe((userData: any) => {
         if (userData != null) {
           const photoUrl = userData.profilePhoto;
+          
+          userData.id = this.chats[key].id;
           console.log(userData);
           this.people.push(userData);
           
@@ -127,6 +131,23 @@ export class MainComponent implements OnInit{
   
   getKeyValues():{key:string,value:any}[] {
     return Object.entries(this.chats).map(([key, value]) => ({  key, value  }));
+  }
+  
+  getChats(chat:any) {
+    this.selectedUserName = chat.username;
+    this.selectedUserPhoto = chat.profilePhoto;
+    
+    this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
+      this.messages = [];
+      if (chatMessages == null) {
+        this.messages = null
+      }
+      else {
+        this.messages=Object.values(chatMessages);
+       
+      }
+      
+    })
   }
 
   
