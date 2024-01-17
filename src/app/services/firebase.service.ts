@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+
 
 
 @Injectable({
@@ -23,13 +25,14 @@ export class FirebaseService {
 
   login(email:string,password:string) {
     this.fireauth.signInWithEmailAndPassword(email, password).then((res) => {
+      this.router.navigate(['/main']);
       localStorage.setItem('token', 'true');
-      if(res.user?.emailVerified){
-        this.router.navigate(['/main']);
-      }
-      else{
-        this.router.navigate(['/verify-email']);
-      }
+      // if(res.user?.emailVerified){
+      //   this.router.navigate(['/main']);
+      // }
+      // else{
+      //   this.router.navigate(['/verify-email']);
+      // }
     }, err => {
       alert('Something went wrong. Please make sure you typed your email and password correctly.');
       this.router.navigate(['/login']);

@@ -17,49 +17,7 @@ export class ChatService {
   ) { }
   
 
-  searchUsers(query: string): Observable<any[]> {
-    return this.auth.user.pipe(
-      switchMap(user => {
-        // Check if the user is authenticated
-        if (user) {
-          return this.firestore
-            .collection('users', ref => ref.where('name', '>=', query).orderBy('name'))
-            .valueChanges()
-            .pipe(
-              // Exclude the current user from the search results
-              map((users: any[]) => users.filter(u => u.uid !== user.uid))
-            );
-        } else {
-          // User is not authenticated, return an empty array or handle it as needed
-          return [];
-        }
-      })
-    );
-  }
-
-  getUserById(userId: string) {
-    return this.firestore.collection('users').doc(userId).valueChanges();
-  }
-
-  sendMessage(senderId: string, receiverId: string, message: string) {
-    const timestamp = new Date();
-    console.log("fknloqew");
-    return this.firestore.collection('messages').add({
-      senderId,
-      receiverId,
-      message,
-      timestamp
-    });
-  }
-
-  getMessages(userId: string) {
-    return this.firestore
-      .collection('messages', ref =>
-        ref.where('senderId', '==', userId).orderBy('timestamp')
-      )
-      .valueChanges();
-  }
-
+  
 }
 
 

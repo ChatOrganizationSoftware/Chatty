@@ -9,6 +9,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { StylingService } from 'src/app/shared/styling.service';
 import { ChatService } from 'src/app/services/chat.service';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+
 
 
 
@@ -17,6 +19,9 @@ import { ChatService } from 'src/app/services/chat.service';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
+  
+  
+ 
 export class MainComponent implements OnInit{
   search = faSearch;
   user = faUser;
@@ -27,6 +32,9 @@ export class MainComponent implements OnInit{
   log_out = faRightFromBracket;
   send = faPaperPlane;
   name: any;
+  profilePhotoUrl: any;
+  
+  flag = true;
   
   userId: string;
   showConfirmation = false; // Başlangıçta onay iletişim kutusu gizlenmiş
@@ -36,14 +44,14 @@ export class MainComponent implements OnInit{
   theme = "Default";
 
   selectedUserName: string = ''; // Add this property
+  
+  chats: any;
+  people:any[]=[];
+  
+  
+  
 
-
-  query: string = '';
-  searchResults: any[];
-
-  messages: any[] = [];
-  newMessage: string = '';
-  selectedUser: any;
+  
 
   currentUserId: string; // Add this property
 
@@ -57,71 +65,71 @@ export class MainComponent implements OnInit{
     private router: Router,
     private route: ActivatedRoute,
     public styleService: StylingService,
-    private chatService:ChatService
+    private chatService: ChatService,
+    private db:AngularFireDatabase
   ) {
 
-    this.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.currentUserId = user.uid;
-      }
-    });
+    
    }
   
   
   
   ngOnInit(): void {
-    this.afAuth.authState.subscribe((name) => {
-      if (name) {
-        this.firestore.collection('users').doc(name.uid).valueChanges().subscribe((userData: any) => {
-          this.name = userData;
-        });
-        this.userId = name.uid;
+    this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.currentUserId = user.uid; 
+        this.getUserInformation();
+        
       }
     });
+    
   }
-
-  searchUsers() {
-    this.chatService.searchUsers(this.query).subscribe((results) => {
-      this.searchResults = results;
-    });
+  
+  getUserInformation() {
+    this.db.object(`/users/${this.currentUserId}`).valueChanges().subscribe((userData: any) => {
+      if (userData == null) {
+        this.afAuth.signOut().then(() => {
+          this.router.navigate(['/login']);
+        })
+      }
+      this.name = userData.username;
+      this.chats = userData.chats;
+      this.getChatInformation();
+      console.log(this.chats);
+      this.profilePhotoUrl = userData.profilePhoto;
+      
+      
+      if (this.profilePhotoUrl != "") {
+        this.flag = false;
+      }
+    })
+    
   }
-
-  selectUser(user: any) {
-    this.selectedUserName = user.name;
-    this.searchResults = []; // Hide the user list after selecting a user
-    this.query = ''; // Clear the search input
-    this.loadMessages();
-
-
-
-  }
-
-  loadMessages() {
-    if (this.selectedUser) {
-      this.chatService.getMessages(this.selectedUser.uid).subscribe((messages) => {
-        this.messages = messages;
-      });
+  
+  getChatInformation() {
+      
+    this.people=[];
+    
+    
+    for (const key of Object.keys(this.chats)) {
+     
+      this.db.object(`/users/${key}`).valueChanges().subscribe((userData: any) => {
+        if (userData != null) {
+          const photoUrl = userData.profilePhoto;
+          console.log(userData);
+          this.people.push(userData);
+          
+        }
+        
+      })
     }
   }
-
-  sendMessage() {
-    if (this.selectedUser && this.newMessage.trim() !== '') {
-      const senderId = this.currentUserId;
-      const receiverId = this.selectedUser.uid;
-      const message = this.newMessage.trim();
   
-      console.log('Sending Message:', { senderId, receiverId, message });
-  
-      this.chatService.sendMessage(senderId, receiverId, message).then(() => {
-        console.log('Message Sent Successfully!');
-        // Message sent successfully, you can update UI or clear input
-        this.newMessage = '';
-        this.loadMessages(); // Reload messages after sending a new one
-      }).catch((error) => {
-        console.error('Error Sending Message:', error);
-      });
-    }
+  getKeyValues():{key:string,value:any}[] {
+    return Object.entries(this.chats).map(([key, value]) => ({  key, value  }));
   }
+
+  
   
 
   getFirstWord(input: string){

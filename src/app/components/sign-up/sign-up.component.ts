@@ -41,15 +41,6 @@ export class SignUpComponent implements OnInit{
    
   }
 
-  
- 
-  // saveData() {
-  //   this.firestore.collection('users').add({
-  //     name: this.name,
-  //     email: this.email,
-  //     password:this.password
-  //   });
-  // }
    
   signUp() {
     if(this.email=="" || this.password=="" || this.name=="")

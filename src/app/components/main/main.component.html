@@ -3,8 +3,15 @@
         <div class="container">
             <div class="nav">
                 <div class="profile-image">
-                    <fa-icon [icon]="user" style="font-size: 50px;"></fa-icon>
-                    <h3>{{getFirstWord(name.name)}}</h3>
+                    <div *ngIf="flag; else defaultProfileBlock">
+                        <fa-icon [icon]="user" style="font-size: 50px;"></fa-icon>
+                      </div>
+                      
+                      <!-- Template to show if showProfile is false -->
+                      <ng-template #defaultProfileBlock>
+                        <img src={{profilePhotoUrl}} alt="profile Photo" style="width: 70px; height: 70px; border-radius: 50%;">
+                      </ng-template>
+                    <h3>{{name}}</h3>
                 </div>
                 <button class="message-icon">
                     <fa-icon [icon]="message"></fa-icon>
@@ -33,31 +40,26 @@
             
             <div class="messages">
                 <div class="search-message">
-                    <input type="text" [(ngModel)]="query" placeholder="Search users" (input)="searchUsers()" />
+                    <input type="text"  placeholder="Search users"  />
                 </div>
                 <div class="people">
-                    <div *ngIf="searchResults">
-                        <ul>
-                          <li *ngFor="let user of searchResults" (click)="selectUser(user)">
-                            {{ user.name }}
-                          </li>
-                        </ul>
-                    </div>
+                   <p *ngFor="let chat of people">
+                    {{chat.username}}
+                    <br>
+                    {{chat.profilePhoto}}
+                   </p>
+                   
                 </div>
             </div>
     
             <div class="chatting" >
-                <div *ngIf="selectedUserName">
-                    <p style="font-size: 40px;"> Chatting with {{ selectedUserName }}</p>
+                <div class="sended-messages">
+                    
                 </div>
-                <div *ngFor="let message of messages">
-                    <p>{{ message.message }}</p>
-                  </div>
-                <div class="sended-messages"></div>
                 <div class="type-message">
-                    <input type="text" [(ngModel)]="newMessage" placeholder="Type your message" />
-                    <button class="send-button" (click)="sendMessage()">
-                        <fa-icon [icon]="send"></fa-icon>
+                    <button class="send-button">
+                        
+                        <!-- <fa-icon [icon]="send"></fa-icon> -->
                     </button>
                 </div>
             </div>
