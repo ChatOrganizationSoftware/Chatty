@@ -4,14 +4,14 @@ import { faPhone,faGear,faRightFromBracket ,faSearch} from '@fortawesome/free-so
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Observable, timestamp } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { StylingService } from 'src/app/shared/styling.service';
 import { ChatService } from 'src/app/services/chat.service';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 
-
+import { Timestamp } from 'firebase/firestore';
 
 
 @Component({
@@ -59,7 +59,9 @@ export class MainComponent implements OnInit{
   currentUserId: string; // Add this property
 
 
-
+  inputMessage: any;
+  selectedChatId: any;
+  selectUserId: any;
 
   constructor(
     private firebaseService: FirebaseService,
@@ -120,6 +122,7 @@ export class MainComponent implements OnInit{
           const photoUrl = userData.profilePhoto;
           
           userData.id = this.chats[key].id;
+          userData.key = key;
           console.log(userData);
           this.people.push(userData);
           
@@ -136,6 +139,8 @@ export class MainComponent implements OnInit{
   getChats(chat:any) {
     this.selectedUserName = chat.username;
     this.selectedUserPhoto = chat.profilePhoto;
+    this.selectedChatId = chat.id;
+    this.selectUserId = chat.key;
     
     this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
       this.messages = [];
@@ -148,6 +153,23 @@ export class MainComponent implements OnInit{
       }
       
     })
+  }
+  
+  sendMessage() {
+    if (this.inputMessage.trim() !="") {
+      this.db.list(`/IndividualChats/${this.selectedChatId}/Messages`).push({
+        message: this.inputMessage.trim(),
+        senderId: this.currentUserId,
+        id: 0
+      })
+      this.db.object(`/users/${this.selectUserId}/chats/${this.selectedChatId}`).update({
+        read: false,
+        time: Timestamp.now().seconds,
+        id:this.selectedChatId
+      })
+    }
+    
+    this.inputMessage = "";
   }
 
   

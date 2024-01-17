@@ -78,15 +78,17 @@
                     </p>
                 </div>
                 <div class="sended-messages">
-                    <div *ngFor="let message of messages">
-                       {{message.senderId}}
+                    <div *ngFor="let message of messages" [ngClass]="{'right-block': message.senderId === currentUserId, 'left-block': message.senderId !== currentUserId}">
+                        <span>
+                            {{ message.message }}
+                        </span>
                     </div>
                     
                 </div>
                 <div class="type-message">
-                    <button class="send-button">
-                        
-                        <!-- <fa-icon [icon]="send"></fa-icon> -->
+                    <input type="text" placeholder=" your message here..." [(ngModel)]="inputMessage">
+                    <button class="send-button" (click)="sendMessage()">
+                        <fa-icon [icon]="send"></fa-icon>
                     </button>
                 </div>
             </div>
