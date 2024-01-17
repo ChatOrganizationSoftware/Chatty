@@ -77,7 +77,7 @@
                         {{selectedUserName}}
                     </p>
                 </div>
-                <div class="sended-messages">
+                <div class="sended-messages" #chatContainer>
                     <div *ngFor="let message of messages" [ngClass]="{'right-block': message.senderId === currentUserId, 'left-block': message.senderId !== currentUserId}">
                         <span>
                             {{ message.message }}

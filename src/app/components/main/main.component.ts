@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { faMessage ,faBell ,faUser,faPaperPlane, faMoon} from '@fortawesome/free-regular-svg-icons';
 import { faPhone,faGear,faRightFromBracket ,faSearch} from '@fortawesome/free-solid-svg-icons';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -88,6 +88,8 @@ export class MainComponent implements OnInit{
       }
     });
     
+    
+    
   }
   
   getUserInformation() {
@@ -100,7 +102,7 @@ export class MainComponent implements OnInit{
       this.name = userData.username;
       this.chats = userData.chats;
       this.getChatInformation();
-      console.log(this.chats);
+      
       this.profilePhotoUrl = userData.profilePhoto;
       
       
@@ -117,13 +119,14 @@ export class MainComponent implements OnInit{
   
     for (const key of Object.keys(this.chats)) {
      
+      
       this.db.object(`/users/${key}`).valueChanges().subscribe((userData: any) => {
         if (userData != null) {
           const photoUrl = userData.profilePhoto;
           
           userData.id = this.chats[key].id;
           userData.key = key;
-          console.log(userData);
+          
           this.people.push(userData);
           
         }
@@ -162,7 +165,7 @@ export class MainComponent implements OnInit{
         senderId: this.currentUserId,
         id: 0
       })
-      this.db.object(`/users/${this.selectUserId}/chats/${this.selectedChatId}`).update({
+      this.db.object(`/users/${this.selectUserId}/chats/${this.currentUserId}`).update({
         read: false,
         time: Timestamp.now().seconds,
         id:this.selectedChatId
@@ -171,6 +174,7 @@ export class MainComponent implements OnInit{
     
     this.inputMessage = "";
   }
+  
 
   
   
