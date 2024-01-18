@@ -48,13 +48,8 @@ export class MainComponent implements OnInit{
   selectedUserPhoto: string = ''; 
   
   
-  chats: any;
-  people:any[]=[];
-  
-  
-  
-
-  
+  chats: any[];
+  people:any[]=[];  
 
   currentUserId: string; // Add this property
 
@@ -100,7 +95,18 @@ export class MainComponent implements OnInit{
         })
       }
       this.name = userData.username;
-      this.chats = userData.chats;
+
+      let chats = userData['chats'];
+      this.chats = [];
+      
+      for(const chat of Object.entries(chats).map(([key, value]) => ({  key, value  }))){
+        let temp:any = chat.value;
+        temp.key = chat.key;
+        this.chats.push(temp)
+      }
+
+      console.log(this.chats);
+
       this.getChatInformation();
       
       this.profilePhotoUrl = userData.profilePhoto;
@@ -116,27 +122,23 @@ export class MainComponent implements OnInit{
   getChatInformation() {
       
     this.people=[];
-  
-    for (const key of Object.keys(this.chats)) {
+    
+    for (const chat of this.chats.sort((a, b) => b.time - a.time)) {
      
-      
-      this.db.object(`/users/${key}`).valueChanges().subscribe((userData: any) => {
-        if (userData != null) {
-          const photoUrl = userData.profilePhoto;
-          
-          userData.id = this.chats[key].id;
-          userData.key = key;
-          
-          this.people.push(userData);
-          
-        }
-        
-      })
+      if(!chat.hasOwnProperty('group')){
+        let sub = this.db.object(`/users/${chat.key}`).valueChanges().subscribe((userData: any) => {
+          if (userData != null) {
+            const photoUrl = userData.profilePhoto;
+            
+            userData.id = chat.id;
+            userData.key = chat.key;
+
+            this.people.push(userData);
+            sub.unsubscribe();
+          }
+        })
+      }
     }
-  }
-  
-  getKeyValues():{key:string,value:any}[] {
-    return Object.entries(this.chats).map(([key, value]) => ({  key, value  }));
   }
   
   getChats(chat:any) {
@@ -167,6 +169,11 @@ export class MainComponent implements OnInit{
       })
       this.db.object(`/users/${this.selectUserId}/chats/${this.currentUserId}`).update({
         read: false,
+        time: Timestamp.now().seconds,
+        id:this.selectedChatId
+      })
+      this.db.object(`/users/${this.currentUserId}/chats/${this.selectUserId}`).update({
+        read: true,
         time: Timestamp.now().seconds,
         id:this.selectedChatId
       })
