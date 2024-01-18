@@ -57,6 +57,8 @@ export class MainComponent implements OnInit{
   inputMessage: any;
   selectedChatId: any;
   selectUserId: any;
+  isGroup = false;
+  members: {[key: string]: string} = {};
 
   constructor(
     private firebaseService: FirebaseService,
@@ -105,8 +107,6 @@ export class MainComponent implements OnInit{
         this.chats.push(temp)
       }
 
-      console.log(this.chats);
-
       this.getChatInformation();
       
       this.profilePhotoUrl = userData.profilePhoto;
@@ -128,10 +128,25 @@ export class MainComponent implements OnInit{
       if(!chat.hasOwnProperty('group')){
         let sub = this.db.object(`/users/${chat.key}`).valueChanges().subscribe((userData: any) => {
           if (userData != null) {
-            const photoUrl = userData.profilePhoto;
             
             userData.id = chat.id;
             userData.key = chat.key;
+            userData.group = false;
+
+            this.people.push(userData);
+            sub.unsubscribe();
+          }
+        })
+      }
+      else{
+        let sub = this.db.object(`/GroupChats/${chat.id}`).valueChanges().subscribe((userData: any) => {
+          if (userData != null) {
+            
+            userData.id = chat.id;
+            userData.key = chat.key;
+            userData.group = true;
+            userData.username = userData.name;
+            userData.profilePhoto = userData.groupPhoto;
 
             this.people.push(userData);
             sub.unsubscribe();
@@ -142,44 +157,89 @@ export class MainComponent implements OnInit{
   }
   
   getChats(chat:any) {
-    this.selectedUserName = chat.username;
-    this.selectedUserPhoto = chat.profilePhoto;
-    this.selectedChatId = chat.id;
-    this.selectUserId = chat.key;
-    
-    this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
-      this.messages = [];
-      if (chatMessages == null) {
-        this.messages = null
-      }
-      else {
-        this.messages=Object.values(chatMessages);
-       
-      }
-      
-    })
-  }
-  
-  sendMessage() {
-    if (this.inputMessage.trim() !="") {
-      this.db.list(`/IndividualChats/${this.selectedChatId}/Messages`).push({
-        message: this.inputMessage.trim(),
-        senderId: this.currentUserId,
-        id: 0
-      })
-      this.db.object(`/users/${this.selectUserId}/chats/${this.currentUserId}`).update({
-        read: false,
-        time: Timestamp.now().seconds,
-        id:this.selectedChatId
-      })
-      this.db.object(`/users/${this.currentUserId}/chats/${this.selectUserId}`).update({
-        read: true,
-        time: Timestamp.now().seconds,
-        id:this.selectedChatId
+    if(!chat.group){
+      this.selectedUserName = chat.username;
+      this.selectedUserPhoto = chat.profilePhoto;
+      this.selectedChatId = chat.id;
+      this.selectUserId = chat.key;
+      this.isGroup = false
+      this.members = {}
+
+      this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
+        this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
+          read: true
+        })
+          this.messages = [];
+          if (chatMessages == null) {
+            this.messages = null
+          }
+          else {
+            this.messages=Object.values(chatMessages);
+          
+          }
+        })
+        
+    }
+    else{
+      this.selectedUserName = chat.username;
+      this.selectedUserPhoto = chat.profilePhoto;
+      this.selectedChatId = chat.id;
+      this.selectUserId = null;
+      this.isGroup = true;
+      this.members = chat.members;
+
+      this.db.object(`/GroupChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
+        this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
+          read: true
+        })
+        this.messages = [];
+        if (chatMessages == null) {
+          this.messages = null
+        }
+        else {
+          this.messages=Object.values(chatMessages);
+        
+        }
       })
     }
     
-    this.inputMessage = "";
+  }
+  
+  sendMessage() {
+    console.log(this.members)
+    if (this.inputMessage.trim() !="") {
+      if(!this.isGroup){
+        this.db.list(`/IndividualChats/${this.selectedChatId}/Messages`).push({
+          message: this.inputMessage.trim(),
+          senderId: this.currentUserId
+        })
+        this.inputMessage = "";
+        this.db.object(`/users/${this.selectUserId}/chats/${this.currentUserId}`).update({
+          read: false,
+          time: Timestamp.now().seconds,
+          id:this.selectedChatId
+        })
+        this.db.object(`/users/${this.currentUserId}/chats/${this.selectUserId}`).update({
+          read: true,
+          time: Timestamp.now().seconds,
+          id:this.selectedChatId
+        })
+      }
+      else{
+        this.db.list(`/GroupChats/${this.selectedChatId}/Messages`).push({
+          message: this.inputMessage.trim(),
+          senderId: this.currentUserId
+        })
+        this.inputMessage = "";
+        for(let user of Object.values(this.members)){
+          this.db.object(`/users/${user}/chats/${this.selectedChatId}`).update({
+            read: false,
+            time: Timestamp.now().seconds,
+            id:this.selectedChatId
+          })
+        }
+      }
+    }
   }
   
 
