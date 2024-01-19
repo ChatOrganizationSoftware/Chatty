@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked ,Renderer2} from '@angular/core';
 import { faMessage ,faBell ,faUser,faPaperPlane, faMoon} from '@fortawesome/free-regular-svg-icons';
 import { faPhone,faGear,faRightFromBracket ,faSearch} from '@fortawesome/free-solid-svg-icons';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -22,7 +22,7 @@ import { Timestamp } from 'firebase/firestore';
   
   
  
-export class MainComponent implements OnInit{
+export class MainComponent implements OnInit, AfterViewChecked{
   search = faSearch;
   user = faUser;
   message = faMessage;
@@ -63,6 +63,9 @@ export class MainComponent implements OnInit{
   selectedChatId: any;
   selectUserId: any;
 
+  @ViewChild('chatContainer') private chatContainer: ElementRef;
+
+  
   constructor(
     private firebaseService: FirebaseService,
     private afAuth: AngularFireAuth,
@@ -71,7 +74,8 @@ export class MainComponent implements OnInit{
     private route: ActivatedRoute,
     public styleService: StylingService,
     private chatService: ChatService,
-    private db:AngularFireDatabase
+    private db: AngularFireDatabase,
+    private renderer: Renderer2
   ) {
 
     
@@ -80,6 +84,7 @@ export class MainComponent implements OnInit{
   
   
   ngOnInit(): void {
+    
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.currentUserId = user.uid; 
@@ -88,8 +93,15 @@ export class MainComponent implements OnInit{
       }
     });
     
-    
-    
+  }
+  
+  ngAfterViewChecked(): void {
+    this.scrollChatToBottom();
+  }
+  
+  scrollChatToBottom(): void {
+    const container = this.chatContainer.nativeElement;
+    container.scrollTop = container.scrollHeight;
   }
   
   getUserInformation() {
@@ -156,6 +168,7 @@ export class MainComponent implements OnInit{
       }
       
     })
+    this.scrollChatToBottom();
   }
   
   sendMessage() {
@@ -173,6 +186,7 @@ export class MainComponent implements OnInit{
     }
     
     this.inputMessage = "";
+    // this.scrollChatToBottom();
   }
   
 

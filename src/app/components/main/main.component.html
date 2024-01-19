@@ -13,7 +13,7 @@
                       </ng-template>
                     <h3>{{name}}</h3>
                 </div>
-                <button class="message-icon">
+                <!-- <button class="message-icon">
                     <fa-icon [icon]="message"></fa-icon>
                 </button>
                 <button class="phone-icon">
@@ -21,12 +21,12 @@
                 </button>
                 <button class="notification-icon">
                     <fa-icon [icon]="bell"></fa-icon>
-                </button>
+                </button> -->
                 <div class="space"></div>
     
-                <button class="settings-icon" (click)="openSettings()">
+                <!-- <button class="settings-icon" (click)="openSettings()">
                     <fa-icon [icon]="settings"></fa-icon>
-                </button> 
+                </button>  -->
                 <button class="log-out-icon" (click)="toggleIcon()">
                     <fa-icon  [icon]="log_out"></fa-icon>
                 </button>
@@ -34,14 +34,14 @@
         
             <div *ngIf="showConfirmation" class="confirmation-dialog">
                 <p>{{ confirmationText }}</p>
-                <button (click)="confirmLogout()" class="confirm">Evet</button>
-                <button (click)="cancelLogout()" class="deny">Hayır</button>
+                <button (click)="confirmLogout()" class="confirm">Yes</button>
+                <button (click)="cancelLogout()" class="deny">No</button>
             </div>
             
             <div class="messages">
-                <div class="search-message">
+                <!-- <div class="search-message">
                     <input type="text"  placeholder="Search users"  />
-                </div>
+                </div> -->
                 <div class="people">
                    <div *ngFor="let chat of people" class="chatPeople" (click)="getChats(chat)">
                     <div [ngSwitch]="chat.profilePhoto" >

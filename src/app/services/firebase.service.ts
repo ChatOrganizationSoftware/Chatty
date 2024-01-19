@@ -15,7 +15,8 @@ export class FirebaseService {
     private fireauth: AngularFireAuth,
     private router: Router,
     private firestore:AngularFirestore,
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private db:AngularFireDatabase
   ) { }
   
   
@@ -45,6 +46,7 @@ export class FirebaseService {
       .then((userCredential) => {
         if (userCredential.user) {
           const uid = userCredential.user.uid;
+          this.saveUserInfo(uid, name, email);
           this.storeUserData(uid, name);
           localStorage.setItem('token', 'true');
           this.sendEmailForVarification(userCredential.user);
@@ -62,6 +64,16 @@ export class FirebaseService {
   storeUserData(uid: string, name: string) {
     this.firestore.collection('users').doc(uid).set({
       name: name
+    });
+  }
+  
+  saveUserInfo(uid: string, userName: string, email: string): Promise<void> {
+    const userRef = this.db.object(`users/${uid}`);
+
+    // Save user information in the database
+    return userRef.set({
+      name: userName,
+      email: email,
     });
   }
 
