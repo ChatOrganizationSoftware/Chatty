@@ -206,7 +206,6 @@ export class MainComponent implements OnInit{
   }
   
   sendMessage() {
-    console.log(this.members)
     if (this.inputMessage.trim() !="") {
       if(!this.isGroup){
         this.db.list(`/IndividualChats/${this.selectedChatId}/Messages`).push({
@@ -216,13 +215,11 @@ export class MainComponent implements OnInit{
         this.inputMessage = "";
         this.db.object(`/users/${this.selectUserId}/chats/${this.currentUserId}`).update({
           read: false,
-          time: Timestamp.now().seconds,
-          id:this.selectedChatId
+          time: Timestamp.now().seconds
         })
         this.db.object(`/users/${this.currentUserId}/chats/${this.selectUserId}`).update({
           read: true,
-          time: Timestamp.now().seconds,
-          id:this.selectedChatId
+          time: Timestamp.now().seconds
         })
       }
       else{
@@ -234,8 +231,7 @@ export class MainComponent implements OnInit{
         for(let user of Object.values(this.members)){
           this.db.object(`/users/${user}/chats/${this.selectedChatId}`).update({
             read: false,
-            time: Timestamp.now().seconds,
-            id:this.selectedChatId
+            time: Timestamp.now().seconds
           })
         }
       }
