@@ -119,7 +119,7 @@ export class MainComponent implements OnInit, AfterViewChecked{
       for(const chat of Object.entries(chats).map(([key, value]) => ({  key, value  }))){
         let temp:any = chat.value;
         temp.key = chat.key;
-        this.chats.push(temp)
+        this.addElementIfUnique(this.chats, temp);
       }
 
       this.getChatInformation();
@@ -148,7 +148,7 @@ export class MainComponent implements OnInit, AfterViewChecked{
             userData.key = chat.key;
             userData.group = false;
 
-            this.people.push(userData);
+            this.addElementIfUnique(this.people, userData);
             sub.unsubscribe();
           }
         })
@@ -163,11 +163,17 @@ export class MainComponent implements OnInit, AfterViewChecked{
             userData.username = userData.name;
             userData.profilePhoto = userData.groupPhoto;
 
-            this.people.push(userData);
+            this.addElementIfUnique(this.people, userData);
             sub.unsubscribe();
           }
         })
       }
+    }
+  }
+
+  addElementIfUnique(chats: any[], newElement: any): void {
+    if (!chats.some(obj => obj.id === newElement.id)) {
+      chats.push(newElement);
     }
   }
   
@@ -182,8 +188,8 @@ export class MainComponent implements OnInit, AfterViewChecked{
       this.selectedUserPhoto = chat.profilePhoto;
       this.selectedChatId = chat.id;
       this.selectUserId = chat.key;
-      this.isGroup = false
-      this.members = {}
+      this.isGroup = false;
+      this.members = {};
 
       let sub = this.db.object(`/IndividualChats/${chat.id}/key`).valueChanges().subscribe((key: any) => {
 
