@@ -13,6 +13,7 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 import { Timestamp } from 'firebase/firestore';
 
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'main',
@@ -58,6 +59,8 @@ export class MainComponent implements OnInit, AfterViewChecked{
   selectedChatId: any;
   selectUserId: any;
   isGroup = false;
+
+  chatKey: any;
   members: {[key: string]: string} = {};
 
   @ViewChild('chatContainer') private chatContainer: ElementRef;
@@ -168,6 +171,11 @@ export class MainComponent implements OnInit, AfterViewChecked{
     }
   }
   
+  getKeyFromString(encodedKeyString: string): CryptoJS.lib.WordArray {
+    const decodedKey = CryptoJS.enc.Base64.parse(encodedKeyString);
+    return decodedKey;
+  }
+
   getChats(chat:any) {
     if(!chat.group){
       this.selectedUserName = chat.username;
@@ -177,18 +185,22 @@ export class MainComponent implements OnInit, AfterViewChecked{
       this.isGroup = false
       this.members = {}
 
-      this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
-        this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
-          read: true
-        })
-          this.messages = [];
-          if (chatMessages == null) {
-            this.messages = null
-          }
-          else {
-            this.messages=Object.values(chatMessages);
-          
-          }
+      let sub = this.db.object(`/IndividualChats/${chat.id}/key`).valueChanges().subscribe((key: any) => {
+
+          this.chatKey = this.getKeyFromString(key);
+          this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
+            this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
+              read: true
+            })
+              this.messages = [];
+              if (chatMessages == null) {
+                this.messages = null
+              }
+              else {   
+                this.messages=Object.values(chatMessages);      
+              }
+            })
+          sub.unsubscribe();
         })
         
     }
@@ -200,28 +212,52 @@ export class MainComponent implements OnInit, AfterViewChecked{
       this.isGroup = true;
       this.members = chat.members;
 
-      this.db.object(`/GroupChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
-        this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
-          read: true
+      let sub = this.db.object(`/GroupChats/${chat.id}/key`).valueChanges().subscribe((key: any) => {
+
+        this.chatKey = this.getKeyFromString(key);
+        this.db.object(`/GroupChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
+          this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
+            read: true
+          })
+          this.messages = [];
+          if (chatMessages == null) {
+            this.messages = null
+          }
+          else {   
+            this.messages=Object.values(chatMessages);
+          }
         })
-        this.messages = [];
-        if (chatMessages == null) {
-          this.messages = null
-        }
-        else {
-          this.messages=Object.values(chatMessages);
-        
-        }
+        sub.unsubscribe();
       })
     }
     
+  }
+
+  encryptMessage(message: string): string {
+    const iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
+    const encrypted = CryptoJS.AES.encrypt(message, this.chatKey, {
+      iv: iv,
+      padding: CryptoJS.pad.Pkcs7,
+      mode: CryptoJS.mode.CBC
+    });
+    return encrypted.toString();
+  }
+  
+  decyptMessage(encryptedMessage: string): string {
+    const iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
+    const decrypted = CryptoJS.AES.decrypt(encryptedMessage, this.chatKey, {
+      iv: iv,
+      padding: CryptoJS.pad.Pkcs7,
+      mode: CryptoJS.mode.CBC
+    });
+    return decrypted.toString(CryptoJS.enc.Utf8);
   }
   
   sendMessage() {
     if (this.inputMessage.trim() !="") {
       if(!this.isGroup){
         this.db.list(`/IndividualChats/${this.selectedChatId}/Messages`).push({
-          message: this.inputMessage.trim(),
+          message: this.encryptMessage(this.inputMessage.trim()),
           senderId: this.currentUserId
         })
         this.inputMessage = "";
@@ -236,7 +272,7 @@ export class MainComponent implements OnInit, AfterViewChecked{
       }
       else{
         this.db.list(`/GroupChats/${this.selectedChatId}/Messages`).push({
-          message: this.inputMessage.trim(),
+          message: this.encryptMessage(this.inputMessage.trim()),
           senderId: this.currentUserId
         })
         this.inputMessage = "";
