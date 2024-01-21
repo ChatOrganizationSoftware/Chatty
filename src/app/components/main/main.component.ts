@@ -112,17 +112,6 @@ export class MainComponent implements OnInit, AfterViewChecked{
         })
       }
       this.name = userData.username;
-
-      let chats = userData['chats'];
-      this.chats = [];
-      
-      for(const chat of Object.entries(chats).map(([key, value]) => ({  key, value  }))){
-        let temp:any = chat.value;
-        temp.key = chat.key;
-        this.addElementIfUnique(this.chats, temp);
-      }
-
-      this.getChatInformation();
       
       this.profilePhotoUrl = userData.profilePhoto;
       
@@ -131,6 +120,23 @@ export class MainComponent implements OnInit, AfterViewChecked{
         this.flag = false;
       }
     })
+
+    this.db.object(`/users/${this.currentUserId}/chats`).valueChanges().subscribe((userData: any) => {
+
+      let chats = userData;
+      this.chats = [];
+      
+      for(const chat of Object.entries(chats).map(([key, value]) => ({  key, value  }))){
+        let temp:any = chat.value;
+        temp.key = chat.key;
+        this.addElementIfUnique(this.chats, temp);
+      }
+
+      this.chats = this.chats.sort((a, b) => b.time - a.time);
+
+      this.getChatInformation();
+      
+    })
     
   }
   
@@ -138,7 +144,7 @@ export class MainComponent implements OnInit, AfterViewChecked{
       
     this.people=[];
     
-    for (const chat of this.chats.sort((a, b) => b.time - a.time)) {
+    for (const chat of this.chats) {
      
       if(!chat.hasOwnProperty('group')){
         let sub = this.db.object(`/users/${chat.key}`).valueChanges().subscribe((userData: any) => {
@@ -171,12 +177,20 @@ export class MainComponent implements OnInit, AfterViewChecked{
     }
   }
 
+
   addElementIfUnique(chats: any[], newElement: any): void {
     if (!chats.some(obj => obj.id === newElement.id)) {
       chats.push(newElement);
     }
+    else{
+      // Remove existing element with the same id
+      chats = chats.filter(obj => obj.id !== newElement.id);
+    
+      // Append the newElement to the beginning of the array
+      chats.unshift(newElement);
+    }
   }
-  
+
   getKeyFromString(encodedKeyString: string): CryptoJS.lib.WordArray {
     const decodedKey = CryptoJS.enc.Base64.parse(encodedKeyString);
     return decodedKey;
@@ -217,6 +231,26 @@ export class MainComponent implements OnInit, AfterViewChecked{
       this.selectUserId = null;
       this.isGroup = true;
       this.members = chat.members;
+
+      this.db.object(`/GroupChats/${chat.id}`).valueChanges().subscribe((userData: any) => {
+        if (userData != null) {
+          let members = userData["members"];
+          if(userData["prevMembers"] != null){
+          this.members = userData["prevMembers"];
+          }
+          else
+            this.members = {};
+          for(const member of Object.values(members) as string[]){
+              let sub = this.db.object(`/users/${member}/username`).valueChanges().subscribe((userData: any) => {
+                if (userData != null) {
+                  this.members[member] = userData.toString();
+                  sub.unsubscribe();
+                }
+              })
+            
+          }
+        }
+      })
 
       let sub = this.db.object(`/GroupChats/${chat.id}/key`).valueChanges().subscribe((key: any) => {
 
@@ -282,7 +316,7 @@ export class MainComponent implements OnInit, AfterViewChecked{
           senderId: this.currentUserId
         })
         this.inputMessage = "";
-        for(let user of Object.values(this.members)){
+        for(let user of Object.keys(this.members)){
           this.db.object(`/users/${user}/chats/${this.selectedChatId}`).update({
             read: false,
             time: Timestamp.now().seconds

@@ -73,12 +73,13 @@
                           <img src={{selectedUserPhoto}} alt="profile Photo" style="width: 40px; height: 40px; border-radius: 50%; margin-left: 5px;">     
                         </div>
                     </div>
-                    <p style="margin-left: 10px;">
+                    <p class="username" style="margin-left: 10px;">
                         {{selectedUserName}}
                     </p>
                 </div>
                 <div class="sended-messages" #chatContainer>
                     <div *ngFor="let message of messages" [ngClass]="{'right-block': message.senderId === currentUserId, 'left-block': message.senderId !== currentUserId}">
+                        <p style="color: white"> {{ this.members[message.senderId] }} </p>    
                         <span>
                             {{ decyptMessage(message.message) }}
                         </span>
