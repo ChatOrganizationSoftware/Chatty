@@ -86,7 +86,7 @@
                     
                 </div>
                 <div class="type-message">
-                    <input type="text" placeholder=" your message here..." [(ngModel)]="inputMessage">
+                    <input type="text" placeholder=" your message here..." [(ngModel)]="inputMessage" (keydown.enter)="sendMessage()" maxlength="1000">
                     <button class="send-button" (click)="sendMessage()">
                         <fa-icon [icon]="send"></fa-icon>
                     </button>
