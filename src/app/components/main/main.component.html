@@ -64,7 +64,7 @@
             </div>
     
             <div class="chatting" >
-                <div class="chatPanel">
+                <div *ngIf="selected" class="chatPanel">
                     <div [ngSwitch]="selectedUserPhoto" style="margin-top:5px;" >
                         <div *ngSwitchCase="''">
                         <fa-icon [icon]="user" style="font-size: 30px; margin-left: 10px;"></fa-icon>     
@@ -73,20 +73,21 @@
                           <img src={{selectedUserPhoto}} alt="profile Photo" style="width: 40px; height: 40px; border-radius: 50%; margin-left: 5px;">     
                         </div>
                     </div>
-                    <p style="margin-left: 10px;">
+                    <p class="username" style="margin-left: 10px;">
                         {{selectedUserName}}
                     </p>
                 </div>
-                <div class="sended-messages" #chatContainer>
+                <div *ngIf="selected" class="sended-messages" #chatContainer>
                     <div *ngFor="let message of messages" [ngClass]="{'right-block': message.senderId === currentUserId, 'left-block': message.senderId !== currentUserId}">
+                        <p *ngIf="message.senderId !== currentUserId" style="color: white"> {{ this.members[message.senderId] }} </p>    
                         <span>
-                            {{ message.message }}
+                            {{ decyptMessage(message.message) }}
                         </span>
                     </div>
                     
                 </div>
-                <div class="type-message">
-                    <input type="text" placeholder=" your message here..." [(ngModel)]="inputMessage">
+                <div *ngIf="selected" class="type-message">
+                    <input type="text" placeholder=" your message here..." [(ngModel)]="inputMessage" (keydown.enter)="sendMessage()" maxlength="1000">
                     <button class="send-button" (click)="sendMessage()">
                         <fa-icon [icon]="send"></fa-icon>
                     </button>

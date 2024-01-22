@@ -13,6 +13,7 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 import { Timestamp } from 'firebase/firestore';
 
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'main',
@@ -46,15 +47,11 @@ export class MainComponent implements OnInit, AfterViewChecked{
 
   selectedUserName: string = ''; 
   selectedUserPhoto: string = ''; 
+  selected = false;
   
   
-  chats: any;
-  people:any[]=[];
-  
-  
-  
-
-  
+  chats: any[];
+  people:any[]=[];  
 
   currentUserId: string; // Add this property
 
@@ -62,6 +59,10 @@ export class MainComponent implements OnInit, AfterViewChecked{
   inputMessage: any;
   selectedChatId: any;
   selectUserId: any;
+  isGroup = false;
+
+  chatKey: any;
+  members: {[key: string]: string} = {};
 
   @ViewChild('chatContainer') private chatContainer: ElementRef;
 
@@ -112,8 +113,6 @@ export class MainComponent implements OnInit, AfterViewChecked{
         })
       }
       this.name = userData.username;
-      this.chats = userData.chats;
-      this.getChatInformation();
       
       this.profilePhotoUrl = userData.profilePhoto;
       
@@ -122,71 +121,211 @@ export class MainComponent implements OnInit, AfterViewChecked{
         this.flag = false;
       }
     })
+
+    this.db.object(`/users/${this.currentUserId}/chats`).valueChanges().subscribe((userData: any) => {
+
+      let chats = userData;
+      this.chats = [];
+      
+      for(const chat of Object.entries(chats).map(([key, value]) => ({  key, value  }))){
+        let temp:any = chat.value;
+        temp.key = chat.key;
+        this.addElementIfUnique(this.chats, temp);
+      }
+
+      this.chats = this.chats.sort((a, b) => b.time - a.time);
+
+      this.getChatInformation();
+      
+    })
     
   }
   
   getChatInformation() {
       
     this.people=[];
-  
-    for (const key of Object.keys(this.chats)) {
+    
+    for (const chat of this.chats) {
      
-      
-      this.db.object(`/users/${key}`).valueChanges().subscribe((userData: any) => {
-        if (userData != null) {
-          const photoUrl = userData.profilePhoto;
-          
-          userData.id = this.chats[key].id;
-          userData.key = key;
-          
-          this.people.push(userData);
-          
-        }
-        
-      })
+      if(!chat.hasOwnProperty('group')){
+        let sub = this.db.object(`/users/${chat.key}`).valueChanges().subscribe((userData: any) => {
+          if (userData != null) {
+            
+            userData.id = chat.id;
+            userData.key = chat.key;
+            userData.group = false;
+
+            this.addElementIfUnique(this.people, userData);
+            sub.unsubscribe();
+          }
+        })
+      }
+      else{
+        let sub = this.db.object(`/GroupChats/${chat.id}`).valueChanges().subscribe((userData: any) => {
+          if (userData != null) {
+            
+            userData.id = chat.id;
+            userData.key = chat.key;
+            userData.group = true;
+            userData.username = userData.name;
+            userData.profilePhoto = userData.groupPhoto;
+
+            this.addElementIfUnique(this.people, userData);
+            sub.unsubscribe();
+          }
+        })
+      }
     }
   }
-  
-  getKeyValues():{key:string,value:any}[] {
-    return Object.entries(this.chats).map(([key, value]) => ({  key, value  }));
+
+
+  addElementIfUnique(chats: any[], newElement: any): void {
+    if (!chats.some(obj => obj.id === newElement.id)) {
+      chats.push(newElement);
+    }
+    else{
+      // Remove existing element with the same id
+      chats = chats.filter(obj => obj.id !== newElement.id);
+    
+      // Append the newElement to the beginning of the array
+      chats.unshift(newElement);
+    }
+  }
+
+  getKeyFromString(encodedKeyString: string): CryptoJS.lib.WordArray {
+    const decodedKey = CryptoJS.enc.Base64.parse(encodedKeyString);
+    return decodedKey;
+  }
+
+  getChats(chat:any) {
+    this.selected = true;
+    if(!chat.group){
+      this.selectedUserName = chat.username;
+      this.selectedUserPhoto = chat.profilePhoto;
+      this.selectedChatId = chat.id;
+      this.selectUserId = chat.key;
+      this.isGroup = false;
+      this.members = {};
+
+      let sub = this.db.object(`/IndividualChats/${chat.id}/key`).valueChanges().subscribe((key: any) => {
+
+          this.chatKey = this.getKeyFromString(key);
+          this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
+            this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
+              read: true
+            })
+              this.messages = [];
+              if (chatMessages == null) {
+                this.messages = null
+              }
+              else {   
+                this.messages=Object.values(chatMessages);      
+              }
+            })
+          sub.unsubscribe();
+        })
+        
+    }
+    else{
+      this.selectedUserName = chat.username;
+      this.selectedUserPhoto = chat.profilePhoto;
+      this.selectedChatId = chat.id;
+      this.selectUserId = null;
+      this.isGroup = true;
+      this.members = chat.members;
+
+      this.db.object(`/GroupChats/${chat.id}`).valueChanges().subscribe((userData: any) => {
+        if (userData != null) {
+          let members = userData["members"];
+          if(userData["prevMembers"] != null){
+          this.members = userData["prevMembers"];
+          }
+          else
+            this.members = {};
+          for(const member of Object.values(members) as string[]){
+              let sub = this.db.object(`/users/${member}/username`).valueChanges().subscribe((userData: any) => {
+                if (userData != null) {
+                  this.members[member] = userData.toString();
+                  sub.unsubscribe();
+                }
+              })
+            
+          }
+        }
+      })
+
+      let sub = this.db.object(`/GroupChats/${chat.id}/key`).valueChanges().subscribe((key: any) => {
+
+        this.chatKey = this.getKeyFromString(key);
+        this.db.object(`/GroupChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
+          this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
+            read: true
+          })
+          this.messages = [];
+          if (chatMessages == null) {
+            this.messages = null
+          }
+          else {   
+            this.messages=Object.values(chatMessages);
+          }
+        })
+        sub.unsubscribe();
+      })
+    }
+    
+  }
+
+  encryptMessage(message: string): string {
+    const iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
+    const encrypted = CryptoJS.AES.encrypt(message, this.chatKey, {
+      iv: iv,
+      padding: CryptoJS.pad.Pkcs7,
+      mode: CryptoJS.mode.CBC
+    });
+    return encrypted.toString();
   }
   
-  getChats(chat:any) {
-    this.selectedUserName = chat.username;
-    this.selectedUserPhoto = chat.profilePhoto;
-    this.selectedChatId = chat.id;
-    this.selectUserId = chat.key;
-    
-    this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
-      this.messages = [];
-      if (chatMessages == null) {
-        this.messages = null
-      }
-      else {
-        this.messages=Object.values(chatMessages);
-       
-      }
-      
-    })
-    this.scrollChatToBottom();
+  decyptMessage(encryptedMessage: string): string {
+    const iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
+    const decrypted = CryptoJS.AES.decrypt(encryptedMessage, this.chatKey, {
+      iv: iv,
+      padding: CryptoJS.pad.Pkcs7,
+      mode: CryptoJS.mode.CBC
+    });
+    return decrypted.toString(CryptoJS.enc.Utf8);
   }
   
   sendMessage() {
     if (this.inputMessage.trim() !="") {
-      this.db.list(`/IndividualChats/${this.selectedChatId}/Messages`).push({
-        message: this.inputMessage.trim(),
-        senderId: this.currentUserId,
-        id: 0
-      })
-      this.db.object(`/users/${this.selectUserId}/chats/${this.currentUserId}`).update({
-        read: false,
-        time: Timestamp.now().seconds,
-        id:this.selectedChatId
-      })
+      if(!this.isGroup){
+        this.db.list(`/IndividualChats/${this.selectedChatId}/Messages`).push({
+          message: this.encryptMessage(this.inputMessage.trim()),
+          senderId: this.currentUserId
+        })
+        this.inputMessage = "";
+        this.db.object(`/users/${this.selectUserId}/chats/${this.currentUserId}`).update({
+          read: false,
+          time: Timestamp.now().seconds
+        })
+        this.db.object(`/users/${this.currentUserId}/chats/${this.selectUserId}`).update({
+          read: true,
+          time: Timestamp.now().seconds
+        })
+      }
+      else{
+        this.db.list(`/GroupChats/${this.selectedChatId}/Messages`).push({
+          message: this.encryptMessage(this.inputMessage.trim()),
+          senderId: this.currentUserId
+        })
+        this.inputMessage = "";
+        for(let user of Object.keys(this.members)){
+          this.db.object(`/users/${user}/chats/${this.selectedChatId}`).update({
+            read: false,
+            time: Timestamp.now().seconds
+          })
+        }
+      }
     }
-    
-    this.inputMessage = "";
-    // this.scrollChatToBottom();
   }
   
 
