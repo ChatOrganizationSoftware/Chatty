@@ -64,6 +64,8 @@ export class MainComponent implements OnInit, AfterViewChecked{
   chatKey: any;
   members: {[key: string]: string} = {};
 
+  sub: any;
+
   @ViewChild('chatContainer') private chatContainer: ElementRef;
 
   
@@ -101,8 +103,10 @@ export class MainComponent implements OnInit, AfterViewChecked{
   }
   
   scrollChatToBottom(): void {
-    const container = this.chatContainer.nativeElement;
-    container.scrollTop = container.scrollHeight;
+    if(this.chatContainer){
+      const container = this.chatContainer.nativeElement;
+      container.scrollTop = container.scrollHeight;
+    }
   }
   
   getUserInformation() {
@@ -126,14 +130,20 @@ export class MainComponent implements OnInit, AfterViewChecked{
 
       let chats = userData;
       this.chats = [];
+      let found = false;
       
       for(const chat of Object.entries(chats).map(([key, value]) => ({  key, value  }))){
         let temp:any = chat.value;
         temp.key = chat.key;
+        if(temp.id == this.selectedChatId)
+          found = true;
         this.addElementIfUnique(this.chats, temp);
       }
 
-      this.chats = this.chats.sort((a, b) => b.time - a.time);
+      if(!found)
+        this.selected = false;
+
+      this.chats = this.chats.sort((a, b) => a.time - b.time);
 
       this.getChatInformation();
       
@@ -181,7 +191,7 @@ export class MainComponent implements OnInit, AfterViewChecked{
 
   addElementIfUnique(chats: any[], newElement: any): void {
     if (!chats.some(obj => obj.id === newElement.id)) {
-      chats.push(newElement);
+      chats.unshift(newElement);
     }
     else{
       // Remove existing element with the same id
@@ -199,6 +209,8 @@ export class MainComponent implements OnInit, AfterViewChecked{
 
   getChats(chat:any) {
     this.selected = true;
+    if(this.sub)
+      this.sub.unsubscribe();
     if(!chat.group){
       this.selectedUserName = chat.username;
       this.selectedUserPhoto = chat.profilePhoto;
@@ -210,21 +222,22 @@ export class MainComponent implements OnInit, AfterViewChecked{
       let sub = this.db.object(`/IndividualChats/${chat.id}/key`).valueChanges().subscribe((key: any) => {
 
           this.chatKey = this.getKeyFromString(key);
-          this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
+          this.sub = this.db.object(`/IndividualChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
             this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
               read: true
             })
-              this.messages = [];
+              this.messages = []; 
               if (chatMessages == null) {
                 this.messages = null
               }
               else {   
                 this.messages=Object.values(chatMessages);      
+            
+                console.log(this.messages);
               }
             })
           sub.unsubscribe();
         })
-        
     }
     else{
       this.selectedUserName = chat.username;
@@ -257,7 +270,7 @@ export class MainComponent implements OnInit, AfterViewChecked{
       let sub = this.db.object(`/GroupChats/${chat.id}/key`).valueChanges().subscribe((key: any) => {
 
         this.chatKey = this.getKeyFromString(key);
-        this.db.object(`/GroupChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
+        this.sub = this.db.object(`/GroupChats/${chat.id}/Messages`).valueChanges().subscribe((chatMessages: any) => {
           this.db.object(`/users/${this.currentUserId}/chats/${chat.id}`).update({
             read: true
           })
@@ -266,7 +279,8 @@ export class MainComponent implements OnInit, AfterViewChecked{
             this.messages = null
           }
           else {   
-            this.messages=Object.values(chatMessages);
+            this.messages=Object.values(chatMessages);      
+            console.log(this.messages);
           }
         })
         sub.unsubscribe();
