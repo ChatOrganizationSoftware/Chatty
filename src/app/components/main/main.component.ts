@@ -140,8 +140,11 @@ export class MainComponent implements OnInit, AfterViewChecked{
         this.addElementIfUnique(this.chats, temp);
       }
 
-      if(!found)
+      if(!found){
         this.selected = false;
+        if(this.sub)
+          this.sub.unsubscribe();
+      }
 
       this.chats = this.chats.sort((a, b) => a.time - b.time);
 
