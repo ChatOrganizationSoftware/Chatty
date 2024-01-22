@@ -47,6 +47,7 @@ export class MainComponent implements OnInit, AfterViewChecked{
 
   selectedUserName: string = ''; 
   selectedUserPhoto: string = ''; 
+  selected = false;
   
   
   chats: any[];
@@ -197,6 +198,7 @@ export class MainComponent implements OnInit, AfterViewChecked{
   }
 
   getChats(chat:any) {
+    this.selected = true;
     if(!chat.group){
       this.selectedUserName = chat.username;
       this.selectedUserPhoto = chat.profilePhoto;
