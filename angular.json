@@ -95,6 +95,9 @@
         "deploy": {
           "builder": "@angular/fire:deploy",
           "options": {
+            "allowedCommonJsDependencies": [
+              "lodash"
+           ],
             "version": 2,
             "browserTarget": "Chatty:build:production"
           }
